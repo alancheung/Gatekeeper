@@ -107,7 +107,7 @@ try:
 
             # Save the captured image into the datasets folder
             (x, y, w, h) = faces[0]
-            cv2.imwrite(f"{datasetFolderPath}/user." + str(face_id) + '.' + str(count) + ".png", gray[y:y+h,x:x+w])
+            cv2.imwrite(f"{datasetFolderPath}/user." + str(face_id) + '.' + str(count) + ".jpg", gray[y:y+h,x:x+w])
         
             count += 1
             expressionCount += 1
