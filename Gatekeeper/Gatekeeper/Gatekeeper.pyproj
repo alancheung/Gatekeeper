@@ -34,6 +34,9 @@
   <ItemGroup>
     <Compile Include="FacialRecognition\generateDataset.py" />
     <Compile Include="FacialRecognition\trainDataset.py" />
+    <Compile Include="FacialRecognition\verifyDataset.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Keypad\keypad.py" />
     <Compile Include="Keypad\open.py" />
   </ItemGroup>
