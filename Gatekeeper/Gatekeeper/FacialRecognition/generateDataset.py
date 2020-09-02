@@ -19,7 +19,7 @@ import os
 argParser = argparse.ArgumentParser()
 argParser.add_argument('--quiet', dest='quiet', action='store_true', help="Disable logging")
 argParser.add_argument("-b", "--base-directory", default=".", help="Directory that project files are stored in. Default to currently active directory.")
-argParser.add_argument("-f", "--log-file", type=string, default=None, help="Specify file to log to.")
+argParser.add_argument("-f", "--log-file", default=None, help="Specify file to log to.")
 argParser.add_argument("-c", "--image-count", type=int, default=10, help="Number of images to take per expression.")
 argParser.set_defaults(quiet=False)
 
@@ -79,8 +79,6 @@ log("Face detector initialized!")
 log("Initialized!", displayWhenQuiet = True)
 log("Running...", displayWhenQuiet = True)
 try:
-    log("Run")
-
     face_id = input("Enter numerical id for user: ")
     while not str(face_id).isnumeric:
         err("ID should be numerical!")
@@ -90,7 +88,8 @@ try:
     count = 0
 
     for expression in expressions:
-        input(f"Please {expression}. Press any key to continue...")
+        log(f"Please {expression}.")
+        input("Press any key to continue...")
 
         while True:
             frameRead, frame = camera.read()

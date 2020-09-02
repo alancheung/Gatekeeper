@@ -23,7 +23,7 @@ from PIL import Image
 argParser = argparse.ArgumentParser()
 argParser.add_argument('--quiet', dest='quiet', action='store_true', help="Disable logging")
 argParser.add_argument("-b", "--base-directory", default=".", help="Directory that project files are stored in. Default to currently active directory.")
-argParser.add_argument("-f", "--log-file", type=string, default=None, help="Specify file to log to.")
+argParser.add_argument("-f", "--log-file", default=None, help="Specify file to log to.")
 argParser.set_defaults(quiet=False)
 
 args = vars(argParser.parse_args())
@@ -96,8 +96,6 @@ if not os.path.exists(trainingFolderPath):
 log("Initialized!", displayWhenQuiet = True)
 log("Running...", displayWhenQuiet = True)
 try:
-    log("Run")
-
     faces, ids = read_image_files(datasetFolderPath)
     log(f"Training {len(faces)} faces for {len(ids)} users. Please wait ...")
 
