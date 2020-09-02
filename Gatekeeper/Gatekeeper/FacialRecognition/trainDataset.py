@@ -36,7 +36,6 @@ logFileName = args["log_file"]
 if logFileName is not None:
     logFileName = f"{baseDirectory}/{logFileName}"
 datasetFolderPath = f"{baseDirectory}/dataset"
-classifierXMLPath = f"{baseDirectory}/haar_frontface_default.xml"
 trainingFolderPath = f"{baseDirectory}/trainer"
 
 # ------------------------- DEFINE FUNCTIONS -------------------------
@@ -70,13 +69,10 @@ def read_image_files(path):
 
         PIL_img = Image.open(imagePath).convert('L') # convert it to grayscale
         img_numpy = np.array(PIL_img, 'uint8')
-
         id = int(os.path.split(imagePath)[-1].split(".")[1])
 
-        faces = detector.detectMultiScale(img_numpy)
-        for (x,y,w,h) in faces:
-            faceSamples.append(img_numpy[y:y+h,x:x+w])
-            ids.append(id)
+        faceSamples.append(img_numpy)
+        ids.append(id)
 
     return faceSamples, ids
 
@@ -85,7 +81,6 @@ log("Initializing...", displayWhenQuiet = True)
 log(f"Args: {args}", displayWhenQuiet = True)
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-detector = cv2.CascadeClassifier(classifierXMLPath);
 log("CV2 face libraries initialized!")
 
 if not os.path.exists(trainingFolderPath):
@@ -97,7 +92,7 @@ log("Initialized!", displayWhenQuiet = True)
 log("Running...", displayWhenQuiet = True)
 try:
     faces, ids = read_image_files(datasetFolderPath)
-    log(f"Training {len(faces)} faces for {len(ids)} users. Please wait ...")
+    log(f"Training {len(faces)} faces for {len(np.unique(ids))} users. Please wait ...")
 
     recognizer.train(faces, np.array(ids))
     log("Training completed!")
