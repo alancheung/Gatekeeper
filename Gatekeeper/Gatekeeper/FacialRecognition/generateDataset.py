@@ -58,6 +58,7 @@ def alrt(text):
 
 def display_text(frame, message):
     cv2.putText(frame, message, (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+    cv2.imshow(f'Feed', frame)
 
 # ------------------------- DEFINE INITIALIZE ------------------------
 log("Initializing...", displayWhenQuiet = True)
@@ -84,10 +85,10 @@ try:
         err("ID should be numerical!")
         face_id = input("Enter numerical id for user: ")
 
-    log(f"Initializing face capture. You will be asked to take a total of {totalImages} pictures in {len(expressions)} positions.")
     count = 0
-
+    log(f"Initializing face capture. You will be asked to take a total of {totalImages} pictures in {len(expressions)} positions.")
     for expression in expressions:
+        expressionCount = 0
         log(f"Please {expression}.")
         input("Press any key to continue...")
 
@@ -102,26 +103,28 @@ try:
             # Only use frame if it has 1 face in it.
             if len(faces) != 1:
                 display_text(frame, f"Found {len(faces)} faces. There should only be one!")
-                cv2.imshow(f'Feed', frame)
                 continue
 
             # Save the captured image into the datasets folder
             (x, y, w, h) = faces[0]
-            cv2.imwrite(f"datasetFolderPath/user." + str(face_id) + '.' + str(count) + ".jpg", gray[y:y+h,x:x+w])
-            count += 1
+            cv2.imwrite(f"{datasetFolderPath}/user." + str(face_id) + '.' + str(count) + ".png", gray[y:y+h,x:x+w])
         
+            count += 1
+            expressionCount += 1
+
             # Show output from the camera
-            display_text(frame, f"Looking good! ({count} of {totalImages})")
-            cv2.imshow(f'Feed', frame)
+            display_text(frame, f"Looking good! ({expressionCount} of {imageCount} remaining; {count} of {totalImages} total)")
 
             # See if user wants to quit
             # Press 'ESC' for exiting video
             keyPressed = cv2.waitKey(100) & 0xff
             if keyPressed == 27:
                 break
-            elif count >= imageCount:
+            elif expressionCount >= imageCount:
                  break
 
+    log("Finished! Don't forget to run the trainer!")
+    
 except KeyboardInterrupt:
     log("KeyboardInterrupt caught! Cleaning up...")
 finally:
