@@ -93,6 +93,6 @@ except KeyboardInterrupt:
     log("KeyboardInterrupt caught! Cleaning up...")
 finally:
     # On error, must open the door!
-    GPIO.output(relayPin, GPIO.HIGH)
+    open_sesame()
     GPIO.cleanup()
     log("Program exiting...")
