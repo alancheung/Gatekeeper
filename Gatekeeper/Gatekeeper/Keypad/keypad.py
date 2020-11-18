@@ -139,9 +139,10 @@ def authenticate(tepidPassword, type):
             update_password_prompt("ACCESS DENIED: Server Error")
             return False
     except Exception as ex:
+        # Probably some connection error, use backup for now.
         err(f"Could not authenticate due to {str(ex)}!")
         update_password_prompt("ACCESS DENIED: Error")
-        return False
+        return authenticate_backup(hex) if type == "KEYPAD" else False
     
     update_password_prompt("ACCESS DENIED")
     err("Fell through authentication!")
@@ -174,6 +175,9 @@ def authenticate_facial(faces):
     update_password_prompt("ACCESS DENIED")
     err("Fell through authentication (facial)!")
     return False, None
+
+def authenticate_backup(hashValue):
+    return backupKey == hashValue
 
 def clear():
     '''Clear the current password being stored and the displays'''
@@ -252,6 +256,7 @@ salt = authInfo["salt"]
 allowedFaces = ["None"] + authInfo["allowedFaces"]
 clientId = authInfo["myId"]
 clientKey = authInfo["myKey"]
+backupKey = authInfo["backupKey"]
 log("Default authentication loaded!")
 
 pictureLayout = [[sg.Image(r"", size=captureImageSize, key=captureKey)]]
