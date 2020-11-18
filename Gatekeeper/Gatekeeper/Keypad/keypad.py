@@ -139,7 +139,7 @@ def authenticate(tepidPassword, type):
             update_password_prompt("ACCESS DENIED: Server Error")
             return False
     except Exception as ex:
-        err(f"Could not authenticate due to {type(ex).__name__}!")
+        err(f"Could not authenticate due to {str(ex)}!")
         update_password_prompt("ACCESS DENIED: Error")
         return False
     
@@ -359,5 +359,7 @@ try:
 except KeyboardInterrupt:
     log("KeyboardInterrupt caught! Cleaning up...")
 finally:
+    # On error, must open the door!
+    GPIO.output(relayPin, GPIO.HIGH)
     GPIO.cleanup()
     log("Program exiting...")
