@@ -31,6 +31,11 @@
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 480);
+#if DEBUG
+            this.Text = "Gatekeeper - DEBUG";
+#else
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+#endif
         }
         #endregion
     }
