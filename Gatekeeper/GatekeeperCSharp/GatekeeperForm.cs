@@ -65,7 +65,7 @@ namespace GatekeeperCSharp
             _openTime = openTime;
             _gpio.OnRfidCardDetected += gpio_OnRfidCardDetected;
 
-            ClearButton_Click(this, null);
+            Clear();
         }
 
         /// <summary>
@@ -105,7 +105,12 @@ namespace GatekeeperCSharp
         #region Form Listeners
         private void AdminButton_Click(object sender, EventArgs e)
         {
-            AdminTablePanel.Visible = true;
+            if (AdminTablePanel.Visible)
+            {
+                Clear();
+            }
+
+            AdminTablePanel.Visible = !AdminTablePanel.Visible;
         }
 
         /// <summary>
@@ -118,10 +123,14 @@ namespace GatekeeperCSharp
             Input += ((Button)sender).Text;
 
             Status = Input.Obfuscate();
-            Console.WriteLine(Input);
         }
 
         private void ClearButton_Click(object sender, EventArgs e)
+        {
+            Clear();
+        }
+
+        private void Clear()
         {
             Input = string.Empty;
             Status = string.Empty;
@@ -141,7 +150,7 @@ namespace GatekeeperCSharp
 
         private void Admin_ExitButton_Click(object sender, EventArgs e)
         {
-            ClearButton_Click(this, e);
+            Clear();
 
             Status = "Stopping...";
             (_gpio as IDisposable)?.Dispose();
