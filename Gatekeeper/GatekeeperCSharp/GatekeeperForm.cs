@@ -1,4 +1,5 @@
-﻿using GatekeeperCSharp.GPIO;
+﻿using GatekeeperCSharp.Common;
+using GatekeeperCSharp.GPIO;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -13,6 +14,9 @@ namespace GatekeeperCSharp
         /// </summary>
         private readonly bool RELEASE = Program.RELEASE;
 
+
+        private readonly IGpioManager _gpio;
+
         /// <summary>
         /// GPIO BCM pin that controls the relay.
         /// </summary>
@@ -23,8 +27,27 @@ namespace GatekeeperCSharp
         /// </summary>
         private readonly TimeSpan _openTime;
 
-        private readonly IGpioManager _gpio;
+        /// <summary>
+        /// Pass-through control to <see cref="StatusLabel.Text"/> property.
+        /// </summary>
+        public string Status 
+        {
+            get => StatusLabel.Text;
+            set
+            {
+                StatusLabel.Text = value;
+            }
+        }
 
+        public string Input { get; set; }
+
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="gpioManager"></param>
+        /// <param name="relayPin"></param>
+        /// <param name="openTime"></param>
         public GatekeeperForm(IGpioManager gpioManager, BcmPin relayPin, TimeSpan openTime)
         {
             InitializeComponent();
@@ -34,6 +57,7 @@ namespace GatekeeperCSharp
             _relayPin = relayPin;
             _openTime = openTime;
 
+            ClearButton_Click(this, null);
         }
 
         /// <summary>
@@ -55,9 +79,35 @@ namespace GatekeeperCSharp
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        #region Form Listeners
+        private void AdminButton_Click(object sender, EventArgs e)
         {
-            _gpio.Toggle(_relayPin, GpioPinValue.High, _openTime);
+
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NumberButton_Click(object sender, EventArgs e)
+        {
+            Input += ((Button)sender).Text;
+
+            Status = Input.Obfuscate();
+            Console.WriteLine(Input);
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            Input = string.Empty;
+            Status = string.Empty;
+        }
+
+        private void SubmitButton_Click(object sender, EventArgs e)
+        {
+            ClearButton_Click(sender, e);
+        }
+        #endregion
     }
 }
