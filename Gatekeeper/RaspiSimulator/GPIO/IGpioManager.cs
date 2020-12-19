@@ -4,7 +4,7 @@ using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Abstractions;
 using Unosquare.RaspberryIO.Peripherals;
 
-namespace GatekeeperCSharp.GPIO
+namespace RaspiSimulator.GPIO
 {
     /// <summary>
     /// Application level wrapper around GPIO functions allowing simulation of GPIO elements.

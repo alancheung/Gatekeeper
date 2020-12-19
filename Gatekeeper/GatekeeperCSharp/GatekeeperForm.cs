@@ -1,5 +1,6 @@
 ﻿using GatekeeperCSharp.Common;
 using GatekeeperCSharp.GPIO;
+using RaspiSimulator.GPIO;
 using System;
 using System.Drawing;
 using System.Text;
@@ -22,7 +23,9 @@ namespace GatekeeperCSharp
         /// </summary>
         private readonly bool RELEASE = Program.RELEASE;
 
-
+        /// <summary>
+        /// Control over GPIO.
+        /// </summary>
         private readonly IGpioManager _gpio;
 
         /// <summary>
