@@ -2,13 +2,21 @@
 using GatekeeperCSharp.GPIO;
 using System;
 using System.Drawing;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using Unosquare.RaspberryIO.Abstractions;
+using RFID = Unosquare.RaspberryIO.Peripherals.RFIDControllerMfrc522;
 
 namespace GatekeeperCSharp
 {
     public partial class GatekeeperForm : Form
     {
+        /// <summary>
+        /// Size of the RaspberryPi 7" touchscreen.
+        /// </summary>
+        public static readonly Size ScreenSize = new Size(800, 480);
+
         /// <summary>
         /// Should this FORM be run in RELEASE mode.
         /// </summary>
@@ -65,13 +73,18 @@ namespace GatekeeperCSharp
         /// </summary>
         private void InitializeFormHeader()
         {
-            ClientSize = new Size(800, 480);
+            ClientSize = ScreenSize;
             FormBorderStyle = FormBorderStyle.None;
+
+            RightTablePanel.Location = new Point(ScreenSize.Width / 2, 0);
+            RightTablePanel.Size = new Size(ScreenSize.Width / 2, ScreenSize.Height);
+
+            AdminTablePanel.Location = new Point(0, 0);
+            AdminTablePanel.Size = new Size(ScreenSize.Width / 2, ScreenSize.Height);
 
             if (RELEASE)
             {
                 Text = "Gatekeeper";
-                StartPosition = FormStartPosition.CenterScreen;
             }
             else
             {
@@ -82,7 +95,7 @@ namespace GatekeeperCSharp
         #region Form Listeners
         private void AdminButton_Click(object sender, EventArgs e)
         {
-
+            AdminTablePanel.Visible = true;
         }
 
         /// <summary>
@@ -106,7 +119,40 @@ namespace GatekeeperCSharp
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            ClearButton_Click(sender, e);
+            _gpio.Toggle(_relayPin, GpioPinValue.High, _openTime);
+        }
+        #endregion
+
+        #region Admin Button Listeners
+        private void Admin_DebugButton_Click(object sender, EventArgs e)
+        {
+            if (_gpio.Rfid.DetectCard() != RFID.Status.AllOk)
+            {
+                Status = "No card detected!";
+            }
+            else
+            {
+                RFID.RfidResponse card = _gpio.Rfid.ReadCardUniqueId();
+                if (card.Status != RFID.Status.AllOk)
+                {
+                    Status = "Error Reading Card!";
+                }
+                else
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (byte b in card.Data)
+                    {
+                        sb.Append(b.ToString());
+                    }
+                    Status = $"RFID: {sb.ToString()}";
+                }
+            }
+        }
+
+        private void Admin_ExitButton_Click(object sender, EventArgs e)
+        {
+            ClearButton_Click(this, e);
+            AdminTablePanel.Visible = false;
         }
         #endregion
     }
