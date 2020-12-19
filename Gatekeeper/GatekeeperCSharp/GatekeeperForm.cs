@@ -1,13 +1,9 @@
 ﻿using GatekeeperCSharp.Common;
-using GatekeeperCSharp.GPIO;
 using RaspiSimulator.GPIO;
 using System;
 using System.Drawing;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using Unosquare.RaspberryIO.Abstractions;
-using RFID = Unosquare.RaspberryIO.Peripherals.RFIDControllerMfrc522;
 
 namespace GatekeeperCSharp
 {
@@ -41,7 +37,7 @@ namespace GatekeeperCSharp
         /// <summary>
         /// Pass-through control to <see cref="StatusLabel.Text"/> property.
         /// </summary>
-        public string Status 
+        public string Status
         {
             get => StatusLabel.Text;
             set
@@ -67,8 +63,19 @@ namespace GatekeeperCSharp
             _gpio = gpioManager;
             _relayPin = relayPin;
             _openTime = openTime;
+            _gpio.OnRfidCardDetected += gpio_OnRfidCardDetected;
 
             ClearButton_Click(this, null);
+        }
+
+        /// <summary>
+        /// Event triggered when the <see cref="IGpioManager"/> detects a new RFID card.
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Arguments included in RFID detection</param>
+        private void gpio_OnRfidCardDetected(object sender, RfidDetectedEventArgs e)
+        {
+            Status = $"CARD: {e.Data.Stringify(d => d)}";
         }
 
         /// <summary>
@@ -129,33 +136,12 @@ namespace GatekeeperCSharp
         #region Admin Button Listeners
         private void Admin_DebugButton_Click(object sender, EventArgs e)
         {
-            if (_gpio.Rfid.DetectCard() != RFID.Status.AllOk)
-            {
-                Status = "No card detected!";
-            }
-            else
-            {
-                RFID.RfidResponse card = _gpio.Rfid.ReadCardUniqueId();
-                if (card.Status != RFID.Status.AllOk)
-                {
-                    Status = "Error Reading Card!";
-                }
-                else
-                {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (byte b in card.Data)
-                    {
-                        sb.Append(b.ToString());
-                    }
-                    Status = $"RFID: {sb.ToString()}";
-                }
-            }
+
         }
 
         private void Admin_ExitButton_Click(object sender, EventArgs e)
         {
             ClearButton_Click(this, e);
-            AdminTablePanel.Visible = false;
         }
         #endregion
     }
