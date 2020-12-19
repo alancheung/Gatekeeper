@@ -13,16 +13,16 @@ namespace GatekeeperCSharp.Simulate
 
         public void Initialize(BcmPin pin, GpioPinDriveMode mode)
         {
-            Initialize(new Dictionary<BcmPin, GpioPinDriveMode>() 
-            { 
-                { pin, mode } 
+            Initialize(new Dictionary<BcmPin, GpioPinDriveMode>()
+            {
+                { pin, mode }
             });
         }
 
         public void Initialize(Dictionary<BcmPin, GpioPinDriveMode> pins)
         {
             state = pins.ToDictionary(key => key.Key, val => new List<GpioPinValue>() { GpioPinValue.Low });
-            Console.WriteLine($"Initialized pins: {state.Stringify(s => s.Key)}");
+            Console.WriteLine($"Initialized pins: {state.Stringify(s => s.Key)}.");
         }
 
         public void SetPin(BcmPin pin, GpioPinValue value)
@@ -37,7 +37,7 @@ namespace GatekeeperCSharp.Simulate
             state[pin].Add(initial);
             state[pin].Add(next);
 
-            Console.WriteLine($"Set pin {pin} to {initial} then {next} after waiting for {duration.TotalMilliseconds}msec.");
+            Console.WriteLine($"Set pin {pin} to {initial} then {next} after waiting for {duration.TotalMilliseconds} milliseconds.");
         }
     }
 }

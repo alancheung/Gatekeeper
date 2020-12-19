@@ -3,9 +3,7 @@ using GatekeeperCSharp.Simulate;
 using System;
 using System.Configuration;
 using System.Windows.Forms;
-using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Abstractions;
-using Unosquare.WiringPi;
 
 namespace GatekeeperCSharp
 {
@@ -50,7 +48,7 @@ namespace GatekeeperCSharp
 
                 // Initialize application settings.
                 gpio.Initialize(relayPin.Value, GpioPinDriveMode.Output);
-                
+
                 // C# Start
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -60,6 +58,7 @@ namespace GatekeeperCSharp
             }
             finally
             {
+                // Must open the door if the program is exiting!
                 if (gpio != null && relayPin.HasValue)
                 {
                     gpio.Toggle(relayPin.Value, GpioPinValue.High, TimeSpan.FromSeconds(3));

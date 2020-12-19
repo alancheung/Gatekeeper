@@ -1,18 +1,8 @@
 ﻿using GatekeeperCSharp.GPIO;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Abstractions;
-using Unosquare.WiringPi;
 
 namespace GatekeeperCSharp
 {
@@ -52,10 +42,11 @@ namespace GatekeeperCSharp
         private void InitializeFormHeader()
         {
             ClientSize = new Size(800, 480);
+            FormBorderStyle = FormBorderStyle.None;
+
             if (RELEASE)
             {
                 Text = "Gatekeeper";
-                FormBorderStyle = FormBorderStyle.None;
                 StartPosition = FormStartPosition.CenterScreen;
             }
             else
