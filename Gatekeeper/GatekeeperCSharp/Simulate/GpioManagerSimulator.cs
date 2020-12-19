@@ -4,12 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unosquare.RaspberryIO.Abstractions;
+using Unosquare.RaspberryIO.Peripherals;
 
 namespace GatekeeperCSharp.Simulate
 {
     public class GpioManagerSimulator : IGpioManager
     {
         Dictionary<BcmPin, List<GpioPinValue>> state;
+
+        public RFIDControllerMfrc522 Rfid { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void Initialize(BcmPin pin, GpioPinDriveMode mode)
         {

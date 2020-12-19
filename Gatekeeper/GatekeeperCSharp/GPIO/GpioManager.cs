@@ -6,15 +6,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Abstractions;
+using Unosquare.RaspberryIO.Peripherals;
 using Unosquare.WiringPi;
 
 namespace GatekeeperCSharp.GPIO
 {
     public class GpioManager : IGpioManager
     {
+        public RFIDControllerMfrc522 Rfid { get; set; }
+
         public void Initialize(BcmPin pin, GpioPinDriveMode mode)
         {
-            Pi.Gpio[pin].PinMode = mode;
+            Initialize(new Dictionary<BcmPin, GpioPinDriveMode>()
+            {
+                { pin, mode }
+            });
         }
 
         public void Initialize(Dictionary<BcmPin, GpioPinDriveMode> pins)
@@ -25,6 +31,8 @@ namespace GatekeeperCSharp.GPIO
             {
                 Pi.Gpio[config.Key].PinMode = config.Value;
             }
+
+            Rfid = new RFIDControllerMfrc522();
         }
 
         

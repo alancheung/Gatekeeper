@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Abstractions;
+using Unosquare.RaspberryIO.Peripherals;
 
 namespace GatekeeperCSharp.GPIO
 {
@@ -10,6 +11,11 @@ namespace GatekeeperCSharp.GPIO
     /// </summary>
     public interface IGpioManager
     {
+        /// <summary>
+        /// RFID controller
+        /// </summary>
+        RFIDControllerMfrc522 Rfid { get; set; }
+
         /// <summary>
         /// Initialize <see cref="Pi.Gpio"/> wrapper with a single <paramref name="pin"/> to <paramref name="mode"/>.
         /// </summary>
