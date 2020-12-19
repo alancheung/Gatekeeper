@@ -145,6 +145,7 @@ namespace GatekeeperCSharp
         private void SubmitButton_Click(object sender, EventArgs e)
         {
             ToggleLock();
+            Clear();
         }
         #endregion
 
