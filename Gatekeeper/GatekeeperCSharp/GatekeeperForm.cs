@@ -76,6 +76,7 @@ namespace GatekeeperCSharp
         private void gpio_OnRfidCardDetected(object sender, RfidDetectedEventArgs e)
         {
             Status = $"CARD: {e.Data.Stringify(d => d)}";
+            ToggleLock();
         }
 
         /// <summary>
@@ -100,6 +101,11 @@ namespace GatekeeperCSharp
             {
                 Text = "Gatekeeper - DEBUG";
             }
+        }
+
+        private void ToggleLock()
+        {
+            _gpio.Toggle(_relayPin, GpioPinValue.High, _openTime);
         }
 
         #region Form Listeners
@@ -138,7 +144,7 @@ namespace GatekeeperCSharp
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            _gpio.Toggle(_relayPin, GpioPinValue.High, _openTime);
+            ToggleLock();
         }
         #endregion
 
