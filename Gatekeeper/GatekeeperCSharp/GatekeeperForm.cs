@@ -142,6 +142,11 @@ namespace GatekeeperCSharp
         private void Admin_ExitButton_Click(object sender, EventArgs e)
         {
             ClearButton_Click(this, e);
+
+            Status = "Stopping...";
+            (_gpio as IDisposable)?.Dispose();
+
+            Close();
         }
         #endregion
     }
