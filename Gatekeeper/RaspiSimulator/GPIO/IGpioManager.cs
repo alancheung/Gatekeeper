@@ -7,6 +7,17 @@ using Unosquare.RaspberryIO.Peripherals;
 namespace RaspiSimulator.GPIO
 {
     /// <summary>
+    /// <see cref="EventArgs"/> thrown when a RFID card is detected.
+    /// </summary>
+    public class RfidDetectedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Data read from the RFID card.
+        /// </summary>
+        public byte[] Data { get; set; }
+    }
+
+    /// <summary>
     /// Application level wrapper around GPIO functions allowing simulation of GPIO elements.
     /// </summary>
     public interface IGpioManager
@@ -15,6 +26,11 @@ namespace RaspiSimulator.GPIO
         /// RFID controller
         /// </summary>
         RFIDControllerMfrc522 Rfid { get; set; }
+
+        /// <summary>
+        /// Event fired when an RFID is read
+        /// </summary>
+        event EventHandler<RfidDetectedEventArgs> OnRfidCardDetected;
 
         /// <summary>
         /// Initialize <see cref="Pi.Gpio"/> wrapper with a single <paramref name="pin"/> to <paramref name="mode"/>.

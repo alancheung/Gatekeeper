@@ -11,7 +11,9 @@ namespace RaspiSimulator.GPIO
     {
         Dictionary<BcmPin, List<GpioPinValue>> state;
 
-        public RFIDControllerMfrc522 Rfid { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public RFIDControllerMfrc522 Rfid { get; set; }
+
+        public event EventHandler<RfidDetectedEventArgs> OnRfidCardDetected;
 
         public void Initialize(BcmPin pin, GpioPinDriveMode mode)
         {
@@ -25,6 +27,8 @@ namespace RaspiSimulator.GPIO
         {
             state = pins.ToDictionary(key => key.Key, val => new List<GpioPinValue>() { GpioPinValue.Low });
             Console.WriteLine($"Initialized pins: {state.Stringify(s => s.Key)}.");
+
+            Rfid = null;
         }
 
         public void SetPin(BcmPin pin, GpioPinValue value)
@@ -40,6 +44,14 @@ namespace RaspiSimulator.GPIO
             state[pin].Add(next);
 
             Console.WriteLine($"Set pin {pin} to {initial} then {next} after waiting for {duration.TotalMilliseconds} milliseconds.");
+        }
+
+        public void InvokeOnRfidCardDetected()
+        {
+            OnRfidCardDetected?.Invoke(this, new RfidDetectedEventArgs()
+            {
+                Data = new byte[4] { 1, 2, 3, 4 }
+            });
         }
     }
 }
