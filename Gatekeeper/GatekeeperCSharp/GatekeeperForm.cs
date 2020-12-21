@@ -107,7 +107,7 @@ namespace GatekeeperCSharp
             string cardData = e.Data.Stringify(d => d, string.Empty);
             if (_authManager.Authenticate(cardData, out string id))
             {
-                Status = "ACCESS GRANTED";
+                Status = $"Welcome {id}!";
                 ToggleLock();
                 Clear();
             }
@@ -203,7 +203,7 @@ namespace GatekeeperCSharp
                 if (_authManager.Authenticate(Input, out string id))
                 {
                     Clear();
-                    Status = "Welcome Admin";
+                    Status = $"Hello {id}";
                     AdminTablePanel.Visible = true;
                 }
                 else
@@ -225,7 +225,7 @@ namespace GatekeeperCSharp
         {
             if (_authManager.Authenticate(Input, out string id))
             {
-                Status = "ACCESS GRANTED";
+                Status = $"Welcome {id}!";
                 ToggleLock();
                 ClearButton_Click(null, null);
             }
