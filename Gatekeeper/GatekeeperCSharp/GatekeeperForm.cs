@@ -20,6 +20,11 @@ namespace GatekeeperCSharp
         private readonly bool RELEASE = Program.RELEASE;
 
         /// <summary>
+        /// Manage all authentication requests and workflows.
+        /// </summary>
+        private readonly AuthenticationManager _authManager;
+
+        /// <summary>
         /// Control over GPIO.
         /// </summary>
         private readonly IGpioManager _gpio;
@@ -43,23 +48,28 @@ namespace GatekeeperCSharp
             set
             {
                 StatusLabel.Text = value;
+                StatusLabel.Update();
             }
         }
 
+        /// <summary>
+        /// The string constructed from the numerical password input.
+        /// </summary>
         public string Input { get; set; }
-
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="authentication"></param>
         /// <param name="gpioManager"></param>
         /// <param name="relayPin"></param>
         /// <param name="openTime"></param>
-        public GatekeeperForm(IGpioManager gpioManager, BcmPin relayPin, TimeSpan openTime)
+        public GatekeeperForm(AuthenticationManager authentication, IGpioManager gpioManager, BcmPin relayPin, TimeSpan openTime)
         {
             InitializeComponent();
             InitializeFormHeader();
 
+            _authManager = authentication;
             _gpio = gpioManager;
             _relayPin = relayPin;
             _openTime = openTime;
@@ -75,8 +85,39 @@ namespace GatekeeperCSharp
         /// <param name="e">Arguments included in RFID detection</param>
         private void gpio_OnRfidCardDetected(object sender, RfidDetectedEventArgs e)
         {
-            Status = $"CARD: {e.Data.Stringify(d => d)}";
-            ToggleLock();
+            string cardData = e.Data.Stringify(d => d, string.Empty);
+            if (_authManager.Authenticate(cardData, out string id))
+            {
+                Status = "ACCESS GRANTED";
+                ToggleLock();
+                Clear();
+            }
+            else
+            {
+                Clear();
+                Status = "ACCESS DENIED";
+            }
+        }
+
+        /// <summary>
+        /// Event triggered when the <see cref="IGpioManager"/> detects a new RFID card.
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Arguments included in RFID detection</param>
+        private void SaveNewCardOnRfidCardDetected(object sender, RfidDetectedEventArgs e)
+        {
+            string cardData = e.Data.Stringify(d => d, string.Empty);
+            if (_authManager.Save(Input, out int newPasswordId))
+            {
+                Status = $"Password Id {newPasswordId} Saved!";
+
+                // Reset the listeners automatically.
+                Admin_AddCardButton_Click(null, null);
+            }
+            else
+            {
+                Status = $"Failed to Save!";
+            }
         }
 
         /// <summary>
@@ -103,22 +144,15 @@ namespace GatekeeperCSharp
             }
         }
 
+        /// <summary>
+        /// Toggle the magnetic lock relay open.
+        /// </summary>
         private void ToggleLock()
         {
             _gpio.Toggle(_relayPin, GpioPinValue.High, _openTime);
         }
 
         #region Form Listeners
-        private void AdminButton_Click(object sender, EventArgs e)
-        {
-            if (AdminTablePanel.Visible)
-            {
-                Clear();
-            }
-
-            AdminTablePanel.Visible = !AdminTablePanel.Visible;
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -142,10 +176,45 @@ namespace GatekeeperCSharp
             Status = string.Empty;
         }
 
+        private void AdminButton_Click(object sender, EventArgs e)
+        {
+            // If the admin panel is being displayed, check the password
+            if (!AdminTablePanel.Visible)
+            {
+                if (_authManager.Authenticate(Input, out string id))
+                {
+                    Clear();
+                    Status = "Welcome Admin";
+                    AdminTablePanel.Visible = true;
+                }
+                else
+                {
+                    Clear();
+                    Status = "ACCESS DENIED";
+                }
+            }
+            else
+            {
+                Clear();
+                AdminTablePanel.Visible = false;
+            }
+
+            SubmitButton.Enabled = !AdminTablePanel.Visible;
+        }
+
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            ToggleLock();
-            Clear();
+            if (_authManager.Authenticate(Input, out string id))
+            {
+                Status = "ACCESS GRANTED";
+                ToggleLock();
+                ClearButton_Click(null, null);
+            }
+            else
+            {
+                Clear();
+                Status = "ACCESS DENIED";
+            }
         }
         #endregion
 
@@ -163,6 +232,63 @@ namespace GatekeeperCSharp
             (_gpio as IDisposable)?.Dispose();
 
             Close();
+        }
+
+        private void Admin_AddNewPasswordButton_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Input))
+            {
+                Status = "Please Enter a Password!";
+            }
+            else
+            {
+                if (_authManager.Save(Input, out int newPasswordId))
+                {
+                    Status = $"Password Id {newPasswordId} Saved!";
+                }
+                else
+                {
+                    Status = $"Failed to Save!";
+                }
+            }
+        }
+
+        private void Admin_LoadPasswordButton_Click(object sender, EventArgs e)
+        {
+            _authManager.Load();
+        }
+
+        private void Admin_TriggerRfidButton_Click(object sender, EventArgs e)
+        {
+            (_gpio as GpioManagerSimulator)?.InvokeOnRfidCardDetected();
+        }
+
+        private bool savingNewCard = false;
+
+        private void Admin_AddCardButton_Click(object sender, EventArgs e)
+        {
+            if (!savingNewCard)
+            {
+                // Unsubscribe real listener
+                _gpio.OnRfidCardDetected -= gpio_OnRfidCardDetected;
+
+                // Start listening for new cards
+                _gpio.OnRfidCardDetected += SaveNewCardOnRfidCardDetected;
+
+                savingNewCard = true;
+            }
+            else
+            {
+                // Stop listening new cards
+                _gpio.OnRfidCardDetected -= SaveNewCardOnRfidCardDetected;
+
+                // Start listening for real again
+                _gpio.OnRfidCardDetected += gpio_OnRfidCardDetected;
+
+                savingNewCard = false;
+            }
+
+            AddCardButton.BackColor = savingNewCard ? Color.Green : Color.Transparent;
         }
         #endregion
     }

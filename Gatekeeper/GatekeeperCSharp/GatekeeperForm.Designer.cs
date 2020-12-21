@@ -31,10 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GatekeeperForm));
             this.MainPanel = new System.Windows.Forms.Panel();
             this.AdminTablePanel = new System.Windows.Forms.TableLayoutPanel();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.Admin_ExitButton = new System.Windows.Forms.Button();
             this.Admin_DebugButton = new System.Windows.Forms.Button();
+            this.AddPasswordButton = new System.Windows.Forms.Button();
+            this.LoadPasswordButton = new System.Windows.Forms.Button();
+            this.TriggerRfidButton = new System.Windows.Forms.Button();
             this.RightTablePanel = new System.Windows.Forms.TableLayoutPanel();
             this.SubmitButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
@@ -50,6 +51,7 @@
             this.EightButton = new System.Windows.Forms.Button();
             this.NineButton = new System.Windows.Forms.Button();
             this.StatusLabel = new System.Windows.Forms.Label();
+            this.AddCardButton = new System.Windows.Forms.Button();
             this.MainPanel.SuspendLayout();
             this.AdminTablePanel.SuspendLayout();
             this.RightTablePanel.SuspendLayout();
@@ -73,10 +75,12 @@
             this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.AdminTablePanel.Controls.Add(this.button3, 2, 0);
-            this.AdminTablePanel.Controls.Add(this.button4, 3, 0);
             this.AdminTablePanel.Controls.Add(this.Admin_ExitButton, 0, 0);
             this.AdminTablePanel.Controls.Add(this.Admin_DebugButton, 1, 0);
+            this.AdminTablePanel.Controls.Add(this.AddPasswordButton, 0, 4);
+            this.AdminTablePanel.Controls.Add(this.TriggerRfidButton, 3, 0);
+            this.AdminTablePanel.Controls.Add(this.LoadPasswordButton, 0, 3);
+            this.AdminTablePanel.Controls.Add(this.AddCardButton, 1, 4);
             this.AdminTablePanel.Location = new System.Drawing.Point(0, 0);
             this.AdminTablePanel.Name = "AdminTablePanel";
             this.AdminTablePanel.RowCount = 5;
@@ -89,38 +93,20 @@
             this.AdminTablePanel.TabIndex = 1;
             this.AdminTablePanel.Visible = false;
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(203, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(94, 90);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(303, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(94, 90);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
             // Admin_ExitButton
             // 
-            this.Admin_ExitButton.BackColor = System.Drawing.Color.LawnGreen;
+            this.Admin_ExitButton.BackColor = System.Drawing.Color.Red;
             this.Admin_ExitButton.Location = new System.Drawing.Point(3, 3);
             this.Admin_ExitButton.Name = "Admin_ExitButton";
             this.Admin_ExitButton.Size = new System.Drawing.Size(94, 90);
             this.Admin_ExitButton.TabIndex = 1;
-            this.Admin_ExitButton.Text = "Exit";
+            this.Admin_ExitButton.Text = "Final Exit";
             this.Admin_ExitButton.UseVisualStyleBackColor = false;
             this.Admin_ExitButton.Click += new System.EventHandler(this.Admin_ExitButton_Click);
             // 
             // Admin_DebugButton
             // 
-            this.Admin_DebugButton.BackColor = System.Drawing.Color.Red;
+            this.Admin_DebugButton.BackColor = System.Drawing.Color.Transparent;
             this.Admin_DebugButton.Location = new System.Drawing.Point(103, 3);
             this.Admin_DebugButton.Name = "Admin_DebugButton";
             this.Admin_DebugButton.Size = new System.Drawing.Size(94, 90);
@@ -128,6 +114,36 @@
             this.Admin_DebugButton.Text = "Debug";
             this.Admin_DebugButton.UseVisualStyleBackColor = false;
             this.Admin_DebugButton.Click += new System.EventHandler(this.Admin_DebugButton_Click);
+            // 
+            // AddPasswordButton
+            // 
+            this.AddPasswordButton.Location = new System.Drawing.Point(3, 387);
+            this.AddPasswordButton.Name = "AddPasswordButton";
+            this.AddPasswordButton.Size = new System.Drawing.Size(94, 90);
+            this.AddPasswordButton.TabIndex = 2;
+            this.AddPasswordButton.Text = "Add New Password";
+            this.AddPasswordButton.UseVisualStyleBackColor = true;
+            this.AddPasswordButton.Click += new System.EventHandler(this.Admin_AddNewPasswordButton_Click);
+            // 
+            // LoadPasswordButton
+            // 
+            this.LoadPasswordButton.Location = new System.Drawing.Point(3, 291);
+            this.LoadPasswordButton.Name = "LoadPasswordButton";
+            this.LoadPasswordButton.Size = new System.Drawing.Size(94, 90);
+            this.LoadPasswordButton.TabIndex = 4;
+            this.LoadPasswordButton.Text = "Load Passwords";
+            this.LoadPasswordButton.UseVisualStyleBackColor = true;
+            this.LoadPasswordButton.Click += new System.EventHandler(this.Admin_LoadPasswordButton_Click);
+            // 
+            // TriggerRfidButton
+            // 
+            this.TriggerRfidButton.Location = new System.Drawing.Point(303, 3);
+            this.TriggerRfidButton.Name = "TriggerRfidButton";
+            this.TriggerRfidButton.Size = new System.Drawing.Size(94, 90);
+            this.TriggerRfidButton.TabIndex = 5;
+            this.TriggerRfidButton.Text = "Trigger RFID";
+            this.TriggerRfidButton.UseVisualStyleBackColor = true;
+            this.TriggerRfidButton.Click += new System.EventHandler(this.Admin_TriggerRfidButton_Click);
             // 
             // RightTablePanel
             // 
@@ -319,6 +335,16 @@
             this.StatusLabel.Text = "Initializing...";
             this.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // AddCardButton
+            // 
+            this.AddCardButton.Location = new System.Drawing.Point(103, 387);
+            this.AddCardButton.Name = "AddCardButton";
+            this.AddCardButton.Size = new System.Drawing.Size(94, 90);
+            this.AddCardButton.TabIndex = 6;
+            this.AddCardButton.Text = "Add New RFID";
+            this.AddCardButton.UseVisualStyleBackColor = true;
+            this.AddCardButton.Click += new System.EventHandler(this.Admin_AddCardButton_Click);
+            // 
             // GatekeeperForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -359,8 +385,10 @@
         private System.Windows.Forms.TableLayoutPanel AdminTablePanel;
         private System.Windows.Forms.Button Admin_DebugButton;
         private System.Windows.Forms.Button Admin_ExitButton;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button AddPasswordButton;
+        private System.Windows.Forms.Button LoadPasswordButton;
+        private System.Windows.Forms.Button TriggerRfidButton;
+        private System.Windows.Forms.Button AddCardButton;
     }
 }
 

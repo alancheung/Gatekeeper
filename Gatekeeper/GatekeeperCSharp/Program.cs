@@ -44,15 +44,15 @@ namespace GatekeeperCSharp
                 {
                     gpio = new GpioManagerSimulator();
                 }
-
-                // Initialize application settings.
                 gpio.Initialize(relayPin.Value, GpioPinDriveMode.Output);
 
-                // C# Start
+                AuthenticationManager authentication = new AuthenticationManager();
+
+                // Initialize application settings.
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                Form form = new GatekeeperForm(gpio, relayPin.Value, openTime);
+                Form form = new GatekeeperForm(authentication, gpio, relayPin.Value, openTime);
                 Application.Run(form);
             }
             finally
