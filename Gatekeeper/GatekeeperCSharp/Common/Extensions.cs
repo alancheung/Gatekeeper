@@ -14,9 +14,9 @@ namespace GatekeeperCSharp.Common
 
     public static class IEnumerableExtensions
     {
-        public static string Stringify<T, TResult>(this IEnumerable<T> enumerable, Func<T, TResult> selector)
+        public static string Stringify<T, TResult>(this IEnumerable<T> enumerable, Func<T, TResult> selector, string separator = ", ")
         {
-            return string.Join(", ", enumerable.Select(selector));
+            return string.Join(separator, enumerable.Select(selector));
         }
     }
 }
