@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Unosquare.RaspberryIO.Abstractions;
 using Unosquare.RaspberryIO.Peripherals;
 
@@ -42,6 +43,8 @@ namespace GatekeeperCSharp.GPIO
             GpioPinValue next = initial == GpioPinValue.High ? GpioPinValue.Low : GpioPinValue.High;
             state[pin].Add(initial);
             state[pin].Add(next);
+
+            Thread.Sleep(duration);
 
             Console.WriteLine($"Set pin {pin} to {initial} then {next} after waiting for {duration.TotalMilliseconds} milliseconds.");
         }
