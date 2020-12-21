@@ -34,8 +34,9 @@
             this.Admin_ExitButton = new System.Windows.Forms.Button();
             this.Admin_DebugButton = new System.Windows.Forms.Button();
             this.AddPasswordButton = new System.Windows.Forms.Button();
-            this.LoadPasswordButton = new System.Windows.Forms.Button();
             this.TriggerRfidButton = new System.Windows.Forms.Button();
+            this.LoadPasswordButton = new System.Windows.Forms.Button();
+            this.AddCardButton = new System.Windows.Forms.Button();
             this.RightTablePanel = new System.Windows.Forms.TableLayoutPanel();
             this.SubmitButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
@@ -51,7 +52,6 @@
             this.EightButton = new System.Windows.Forms.Button();
             this.NineButton = new System.Windows.Forms.Button();
             this.StatusLabel = new System.Windows.Forms.Label();
-            this.AddCardButton = new System.Windows.Forms.Button();
             this.MainPanel.SuspendLayout();
             this.AdminTablePanel.SuspendLayout();
             this.RightTablePanel.SuspendLayout();
@@ -125,6 +125,16 @@
             this.AddPasswordButton.UseVisualStyleBackColor = true;
             this.AddPasswordButton.Click += new System.EventHandler(this.Admin_AddNewPasswordButton_Click);
             // 
+            // TriggerRfidButton
+            // 
+            this.TriggerRfidButton.Location = new System.Drawing.Point(303, 3);
+            this.TriggerRfidButton.Name = "TriggerRfidButton";
+            this.TriggerRfidButton.Size = new System.Drawing.Size(94, 90);
+            this.TriggerRfidButton.TabIndex = 5;
+            this.TriggerRfidButton.Text = "Trigger RFID";
+            this.TriggerRfidButton.UseVisualStyleBackColor = true;
+            this.TriggerRfidButton.Click += new System.EventHandler(this.Admin_TriggerRfidButton_Click);
+            // 
             // LoadPasswordButton
             // 
             this.LoadPasswordButton.Location = new System.Drawing.Point(3, 291);
@@ -135,15 +145,15 @@
             this.LoadPasswordButton.UseVisualStyleBackColor = true;
             this.LoadPasswordButton.Click += new System.EventHandler(this.Admin_LoadPasswordButton_Click);
             // 
-            // TriggerRfidButton
+            // AddCardButton
             // 
-            this.TriggerRfidButton.Location = new System.Drawing.Point(303, 3);
-            this.TriggerRfidButton.Name = "TriggerRfidButton";
-            this.TriggerRfidButton.Size = new System.Drawing.Size(94, 90);
-            this.TriggerRfidButton.TabIndex = 5;
-            this.TriggerRfidButton.Text = "Trigger RFID";
-            this.TriggerRfidButton.UseVisualStyleBackColor = true;
-            this.TriggerRfidButton.Click += new System.EventHandler(this.Admin_TriggerRfidButton_Click);
+            this.AddCardButton.Location = new System.Drawing.Point(103, 387);
+            this.AddCardButton.Name = "AddCardButton";
+            this.AddCardButton.Size = new System.Drawing.Size(94, 90);
+            this.AddCardButton.TabIndex = 6;
+            this.AddCardButton.Text = "Add New RFID";
+            this.AddCardButton.UseVisualStyleBackColor = true;
+            this.AddCardButton.Click += new System.EventHandler(this.Admin_AddCardButton_Click);
             // 
             // RightTablePanel
             // 
@@ -334,16 +344,6 @@
             this.StatusLabel.TabIndex = 13;
             this.StatusLabel.Text = "Initializing...";
             this.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // AddCardButton
-            // 
-            this.AddCardButton.Location = new System.Drawing.Point(103, 387);
-            this.AddCardButton.Name = "AddCardButton";
-            this.AddCardButton.Size = new System.Drawing.Size(94, 90);
-            this.AddCardButton.TabIndex = 6;
-            this.AddCardButton.Text = "Add New RFID";
-            this.AddCardButton.UseVisualStyleBackColor = true;
-            this.AddCardButton.Click += new System.EventHandler(this.Admin_AddCardButton_Click);
             // 
             // GatekeeperForm
             // 

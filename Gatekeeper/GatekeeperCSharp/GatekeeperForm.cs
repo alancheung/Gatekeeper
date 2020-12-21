@@ -48,6 +48,25 @@ namespace GatekeeperCSharp
             set
             {
                 StatusLabel.Text = value;
+
+                int textLength = StatusLabel.Text.Length;
+                if (textLength > 36)
+                {
+                    StatusLabel.Font = new Font(StatusLabel.Font.FontFamily, 12);
+                }
+                else if (textLength > 24)
+                {
+                    StatusLabel.Font = new Font(StatusLabel.Font.FontFamily, 18); 
+                }
+                else if (StatusLabel.Text.Length > 12)
+                {
+                    StatusLabel.Font = new Font(StatusLabel.Font.FontFamily, 24);
+                }
+                else
+                {
+                    StatusLabel.Font = new Font(StatusLabel.Font.FontFamily, 36);
+                }
+
                 StatusLabel.Update();
             }
         }
