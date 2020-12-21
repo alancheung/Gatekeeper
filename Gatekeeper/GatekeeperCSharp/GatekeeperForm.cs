@@ -309,6 +309,11 @@ namespace GatekeeperCSharp
 
             AddCardButton.BackColor = savingNewCard ? Color.Green : Color.Transparent;
         }
+
+        private void Admin_TurnOffLightsButton_Click(object sender, EventArgs e)
+        {
+            // TODO
+        }
         #endregion
     }
 }

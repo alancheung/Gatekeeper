@@ -52,6 +52,7 @@
             this.EightButton = new System.Windows.Forms.Button();
             this.NineButton = new System.Windows.Forms.Button();
             this.StatusLabel = new System.Windows.Forms.Label();
+            this.TurnOffLightsButton = new System.Windows.Forms.Button();
             this.MainPanel.SuspendLayout();
             this.AdminTablePanel.SuspendLayout();
             this.RightTablePanel.SuspendLayout();
@@ -81,6 +82,7 @@
             this.AdminTablePanel.Controls.Add(this.TriggerRfidButton, 3, 0);
             this.AdminTablePanel.Controls.Add(this.LoadPasswordButton, 0, 3);
             this.AdminTablePanel.Controls.Add(this.AddCardButton, 1, 4);
+            this.AdminTablePanel.Controls.Add(this.TurnOffLightsButton, 0, 2);
             this.AdminTablePanel.Location = new System.Drawing.Point(0, 0);
             this.AdminTablePanel.Name = "AdminTablePanel";
             this.AdminTablePanel.RowCount = 5;
@@ -359,6 +361,16 @@
             this.StatusLabel.Text = "Initializing...";
             this.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // TurnOffLightsButton
+            // 
+            this.TurnOffLightsButton.Location = new System.Drawing.Point(3, 195);
+            this.TurnOffLightsButton.Name = "TurnOffLightsButton";
+            this.TurnOffLightsButton.Size = new System.Drawing.Size(94, 90);
+            this.TurnOffLightsButton.TabIndex = 7;
+            this.TurnOffLightsButton.Text = "Turn Off Lights";
+            this.TurnOffLightsButton.UseVisualStyleBackColor = true;
+            this.TurnOffLightsButton.Click += new System.EventHandler(this.Admin_TurnOffLightsButton_Click);
+            // 
             // GatekeeperForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -403,6 +415,7 @@
         private System.Windows.Forms.Button LoadPasswordButton;
         private System.Windows.Forms.Button TriggerRfidButton;
         private System.Windows.Forms.Button AddCardButton;
+        private System.Windows.Forms.Button TurnOffLightsButton;
     }
 }
 
