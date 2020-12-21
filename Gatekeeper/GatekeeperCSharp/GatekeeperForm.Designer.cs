@@ -30,6 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GatekeeperForm));
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.AdminTablePanel = new System.Windows.Forms.TableLayoutPanel();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.Admin_ExitButton = new System.Windows.Forms.Button();
+            this.Admin_DebugButton = new System.Windows.Forms.Button();
             this.RightTablePanel = new System.Windows.Forms.TableLayoutPanel();
             this.SubmitButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
@@ -45,14 +50,9 @@
             this.EightButton = new System.Windows.Forms.Button();
             this.NineButton = new System.Windows.Forms.Button();
             this.StatusLabel = new System.Windows.Forms.Label();
-            this.AdminTablePanel = new System.Windows.Forms.TableLayoutPanel();
-            this.Admin_DebugButton = new System.Windows.Forms.Button();
-            this.Admin_ExitButton = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.MainPanel.SuspendLayout();
-            this.RightTablePanel.SuspendLayout();
             this.AdminTablePanel.SuspendLayout();
+            this.RightTablePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainPanel
@@ -65,6 +65,69 @@
             this.MainPanel.Name = "MainPanel";
             this.MainPanel.Size = new System.Drawing.Size(800, 494);
             this.MainPanel.TabIndex = 0;
+            // 
+            // AdminTablePanel
+            // 
+            this.AdminTablePanel.ColumnCount = 4;
+            this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.AdminTablePanel.Controls.Add(this.button3, 2, 0);
+            this.AdminTablePanel.Controls.Add(this.button4, 3, 0);
+            this.AdminTablePanel.Controls.Add(this.Admin_ExitButton, 0, 0);
+            this.AdminTablePanel.Controls.Add(this.Admin_DebugButton, 1, 0);
+            this.AdminTablePanel.Location = new System.Drawing.Point(0, 0);
+            this.AdminTablePanel.Name = "AdminTablePanel";
+            this.AdminTablePanel.RowCount = 5;
+            this.AdminTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.AdminTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.AdminTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.AdminTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.AdminTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.AdminTablePanel.Size = new System.Drawing.Size(400, 480);
+            this.AdminTablePanel.TabIndex = 1;
+            this.AdminTablePanel.Visible = false;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(203, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(94, 90);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(303, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(94, 90);
+            this.button4.TabIndex = 3;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // Admin_ExitButton
+            // 
+            this.Admin_ExitButton.BackColor = System.Drawing.Color.LawnGreen;
+            this.Admin_ExitButton.Location = new System.Drawing.Point(3, 3);
+            this.Admin_ExitButton.Name = "Admin_ExitButton";
+            this.Admin_ExitButton.Size = new System.Drawing.Size(94, 90);
+            this.Admin_ExitButton.TabIndex = 1;
+            this.Admin_ExitButton.Text = "Exit";
+            this.Admin_ExitButton.UseVisualStyleBackColor = false;
+            this.Admin_ExitButton.Click += new System.EventHandler(this.Admin_ExitButton_Click);
+            // 
+            // Admin_DebugButton
+            // 
+            this.Admin_DebugButton.BackColor = System.Drawing.Color.Red;
+            this.Admin_DebugButton.Location = new System.Drawing.Point(103, 3);
+            this.Admin_DebugButton.Name = "Admin_DebugButton";
+            this.Admin_DebugButton.Size = new System.Drawing.Size(94, 90);
+            this.Admin_DebugButton.TabIndex = 0;
+            this.Admin_DebugButton.Text = "Debug";
+            this.Admin_DebugButton.UseVisualStyleBackColor = false;
+            this.Admin_DebugButton.Click += new System.EventHandler(this.Admin_DebugButton_Click);
             // 
             // RightTablePanel
             // 
@@ -91,11 +154,11 @@
             this.RightTablePanel.Name = "RightTablePanel";
             this.RightTablePanel.RowCount = 6;
             this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 96F));
-            this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76.8F));
-            this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76.8F));
-            this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76.8F));
-            this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76.8F));
-            this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76.8F));
+            this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 77F));
+            this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 77F));
+            this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 77F));
+            this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 77F));
+            this.RightTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 77F));
             this.RightTablePanel.Size = new System.Drawing.Size(400, 480);
             this.RightTablePanel.TabIndex = 0;
             // 
@@ -256,66 +319,6 @@
             this.StatusLabel.Text = "Initializing...";
             this.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // AdminTablePanel
-            // 
-            this.AdminTablePanel.ColumnCount = 4;
-            this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.AdminTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.AdminTablePanel.Controls.Add(this.button3, 2, 0);
-            this.AdminTablePanel.Controls.Add(this.button4, 3, 0);
-            this.AdminTablePanel.Controls.Add(this.Admin_ExitButton, 0, 0);
-            this.AdminTablePanel.Controls.Add(this.Admin_DebugButton, 1, 0);
-            this.AdminTablePanel.Location = new System.Drawing.Point(0, 0);
-            this.AdminTablePanel.Name = "AdminTablePanel";
-            this.AdminTablePanel.RowCount = 2;
-            this.AdminTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.AdminTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.AdminTablePanel.Size = new System.Drawing.Size(400, 480);
-            this.AdminTablePanel.TabIndex = 1;
-            this.AdminTablePanel.Visible = false;
-            // 
-            // Admin_DebugButton
-            // 
-            this.Admin_DebugButton.BackColor = System.Drawing.Color.Red;
-            this.Admin_DebugButton.Location = new System.Drawing.Point(103, 3);
-            this.Admin_DebugButton.Name = "Admin_DebugButton";
-            this.Admin_DebugButton.Size = new System.Drawing.Size(94, 234);
-            this.Admin_DebugButton.TabIndex = 0;
-            this.Admin_DebugButton.Text = "Debug";
-            this.Admin_DebugButton.UseVisualStyleBackColor = false;
-            this.Admin_DebugButton.Click += new System.EventHandler(this.Admin_DebugButton_Click);
-            // 
-            // Admin_ExitButton
-            // 
-            this.Admin_ExitButton.BackColor = System.Drawing.Color.LawnGreen;
-            this.Admin_ExitButton.Location = new System.Drawing.Point(3, 3);
-            this.Admin_ExitButton.Name = "Admin_ExitButton";
-            this.Admin_ExitButton.Size = new System.Drawing.Size(94, 234);
-            this.Admin_ExitButton.TabIndex = 1;
-            this.Admin_ExitButton.Text = "Exit";
-            this.Admin_ExitButton.UseVisualStyleBackColor = false;
-            this.Admin_ExitButton.Click += new System.EventHandler(this.Admin_ExitButton_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(203, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(94, 234);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(303, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(94, 234);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
             // GatekeeperForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -331,8 +334,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gatekeeper - DEBUG";
             this.MainPanel.ResumeLayout(false);
-            this.RightTablePanel.ResumeLayout(false);
             this.AdminTablePanel.ResumeLayout(false);
+            this.RightTablePanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

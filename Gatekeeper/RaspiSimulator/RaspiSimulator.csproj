@@ -72,12 +72,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utility\Utility.csproj">
-      <Project>{43c99f4f-fac4-4b54-b6e0-3745025e8e72}</Project>
-      <Name>Utility</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="RFID\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

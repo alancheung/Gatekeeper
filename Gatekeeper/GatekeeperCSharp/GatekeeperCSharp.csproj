@@ -98,6 +98,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthenticationManager.cs" />
+    <Compile Include="Common\Extensions.cs" />
     <Compile Include="GatekeeperForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +107,8 @@
       <DependentUpon>GatekeeperForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GPIO\GpioManager.cs" />
+    <Compile Include="GPIO\GpioManagerSimulator.cs" />
+    <Compile Include="GPIO\IGpioManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GatekeeperForm.resx">
@@ -145,16 +149,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RaspiSimulator\RaspiSimulator.csproj">
-      <Project>{c96c2b64-b486-440f-bfd6-99a795a62406}</Project>
-      <Name>RaspiSimulator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utility\Utility.csproj">
-      <Project>{43c99f4f-fac4-4b54-b6e0-3745025e8e72}</Project>
-      <Name>Utility</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
