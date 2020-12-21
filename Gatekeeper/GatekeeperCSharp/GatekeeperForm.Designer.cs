@@ -192,6 +192,7 @@
             // 
             this.SubmitButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.RightTablePanel.SetColumnSpan(this.SubmitButton, 3);
+            this.SubmitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SubmitButton.Location = new System.Drawing.Point(3, 407);
             this.SubmitButton.Name = "SubmitButton";
             this.SubmitButton.Size = new System.Drawing.Size(394, 71);
@@ -203,6 +204,7 @@
             // ClearButton
             // 
             this.ClearButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.ClearButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ClearButton.Location = new System.Drawing.Point(3, 330);
             this.ClearButton.Name = "ClearButton";
             this.ClearButton.Size = new System.Drawing.Size(127, 70);
@@ -214,6 +216,7 @@
             // ZeroButton
             // 
             this.ZeroButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.ZeroButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ZeroButton.Location = new System.Drawing.Point(136, 330);
             this.ZeroButton.Name = "ZeroButton";
             this.ZeroButton.Size = new System.Drawing.Size(127, 70);
@@ -225,6 +228,7 @@
             // AdminButton
             // 
             this.AdminButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.AdminButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AdminButton.Location = new System.Drawing.Point(269, 330);
             this.AdminButton.Name = "AdminButton";
             this.AdminButton.Size = new System.Drawing.Size(128, 70);
@@ -236,6 +240,7 @@
             // OneButton
             // 
             this.OneButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.OneButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OneButton.Location = new System.Drawing.Point(3, 253);
             this.OneButton.Name = "OneButton";
             this.OneButton.Size = new System.Drawing.Size(127, 70);
@@ -247,6 +252,7 @@
             // TwoButton
             // 
             this.TwoButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.TwoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TwoButton.Location = new System.Drawing.Point(136, 253);
             this.TwoButton.Name = "TwoButton";
             this.TwoButton.Size = new System.Drawing.Size(127, 70);
@@ -258,6 +264,7 @@
             // ThreeButton
             // 
             this.ThreeButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.ThreeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ThreeButton.Location = new System.Drawing.Point(269, 253);
             this.ThreeButton.Name = "ThreeButton";
             this.ThreeButton.Size = new System.Drawing.Size(128, 70);
@@ -269,6 +276,7 @@
             // FourButton
             // 
             this.FourButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.FourButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FourButton.Location = new System.Drawing.Point(3, 176);
             this.FourButton.Name = "FourButton";
             this.FourButton.Size = new System.Drawing.Size(127, 70);
@@ -280,6 +288,7 @@
             // FiveButton
             // 
             this.FiveButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.FiveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FiveButton.Location = new System.Drawing.Point(136, 176);
             this.FiveButton.Name = "FiveButton";
             this.FiveButton.Size = new System.Drawing.Size(127, 70);
@@ -291,6 +300,7 @@
             // SixButton
             // 
             this.SixButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.SixButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SixButton.Location = new System.Drawing.Point(269, 176);
             this.SixButton.Name = "SixButton";
             this.SixButton.Size = new System.Drawing.Size(128, 70);
@@ -302,6 +312,7 @@
             // SevenButton
             // 
             this.SevenButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.SevenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SevenButton.Location = new System.Drawing.Point(3, 99);
             this.SevenButton.Name = "SevenButton";
             this.SevenButton.Size = new System.Drawing.Size(127, 70);
@@ -313,6 +324,7 @@
             // EightButton
             // 
             this.EightButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.EightButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EightButton.Location = new System.Drawing.Point(136, 99);
             this.EightButton.Name = "EightButton";
             this.EightButton.Size = new System.Drawing.Size(127, 70);
@@ -324,6 +336,7 @@
             // NineButton
             // 
             this.NineButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.NineButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NineButton.Location = new System.Drawing.Point(269, 99);
             this.NineButton.Name = "NineButton";
             this.NineButton.Size = new System.Drawing.Size(128, 70);
