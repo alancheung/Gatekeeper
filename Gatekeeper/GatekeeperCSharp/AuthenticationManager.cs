@@ -8,10 +8,13 @@ namespace GatekeeperCSharp
     public class AuthenticationManager
     {
         /// <summary>
-        /// The path to the authentication file.
+        /// The name of the authentication file.
         /// </summary>
         private const string AUTH_FILE_KEY = "authentication.json";
 
+        /// <summary>
+        /// The path to the authentication file.
+        /// </summary>
         private readonly string FILE_PATH = Path.Combine(Environment.CurrentDirectory, AUTH_FILE_KEY);
 
         /// <summary>

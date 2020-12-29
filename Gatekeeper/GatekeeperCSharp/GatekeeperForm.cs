@@ -172,11 +172,6 @@ namespace GatekeeperCSharp
         }
 
         #region Form Listeners
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void NumberButton_Click(object sender, EventArgs e)
         {
             Input += ((Button)sender).Text;
@@ -205,6 +200,7 @@ namespace GatekeeperCSharp
                     Clear();
                     Status = $"Hello {id}";
                     AdminTablePanel.Visible = true;
+                    ToggleLock();
                 }
                 else
                 {
