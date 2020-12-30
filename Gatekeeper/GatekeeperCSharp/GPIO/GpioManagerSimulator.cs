@@ -15,6 +15,8 @@ namespace GatekeeperCSharp.GPIO
 
         public RFIDControllerMfrc522 Rfid { get; set; }
 
+        public bool AddingNewRfidCard { get; set; } = false;
+
         public event EventHandler<RfidDetectedEventArgs> OnRfidCardDetected;
 
         public void Initialize(BcmPin pin, GpioPinDriveMode mode)

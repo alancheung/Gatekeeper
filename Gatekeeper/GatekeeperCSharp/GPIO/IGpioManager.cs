@@ -28,6 +28,11 @@ namespace GatekeeperCSharp.GPIO
         RFIDControllerMfrc522 Rfid { get; set; }
 
         /// <summary>
+        /// Is the user currently saving a new card?
+        /// </summary>
+        bool AddingNewRfidCard { get; set; }
+
+        /// <summary>
         /// Event fired when an RFID is read
         /// </summary>
         event EventHandler<RfidDetectedEventArgs> OnRfidCardDetected;

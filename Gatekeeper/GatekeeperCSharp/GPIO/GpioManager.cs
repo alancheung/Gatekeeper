@@ -13,6 +13,7 @@ namespace GatekeeperCSharp.GPIO
     public class GpioManager : IGpioManager, IDisposable
     {
         private Thread RfidReadThread { get; set; }
+        public bool AddingNewRfidCard { get; set; } = false;
         private CancellationTokenSource RfidReadThreadCancellationSource { get; set; }
 
         public RFIDControllerMfrc522 Rfid { get; set; }
@@ -66,7 +67,7 @@ namespace GatekeeperCSharp.GPIO
         /// <summary>
         /// Threaded action to listen for RFID events.
         /// </summary>
-        public void RfidReadAction()
+        private void RfidReadAction()
         {
             while (!RfidReadThreadCancellationSource.IsCancellationRequested)
             {

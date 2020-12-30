@@ -119,24 +119,15 @@ namespace GatekeeperCSharp
         }
 
         /// <summary>
-        /// Event triggered when the <see cref="IGpioManager"/> detects a new RFID card.
+        /// Event triggered when the <see cref="IGpioManager"/> detects a new RFID card. Just displays the unencrypted card details
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Arguments included in RFID detection</param>
         private void SaveNewCardOnRfidCardDetected(object sender, RfidDetectedEventArgs e)
         {
             string cardData = e.Data.Stringify(d => d, string.Empty);
-            if (_authManager.Save(Input, out int newPasswordId))
-            {
-                Status = $"Password Id {newPasswordId} Saved!";
-
-                // Reset the listeners automatically.
-                Admin_AddCardButton_Click(null, null);
-            }
-            else
-            {
-                Status = $"Failed to Save!";
-            }
+            Input = cardData;
+            Status = cardData;
         }
 
         /// <summary>
@@ -278,32 +269,48 @@ namespace GatekeeperCSharp
             (_gpio as GpioManagerSimulator)?.InvokeOnRfidCardDetected();
         }
 
-        private bool savingNewCard = false;
-
         private void Admin_AddCardButton_Click(object sender, EventArgs e)
         {
-            if (!savingNewCard)
+            if (!_gpio.AddingNewRfidCard)
             {
+                Clear();
+
                 // Unsubscribe real listener
                 _gpio.OnRfidCardDetected -= gpio_OnRfidCardDetected;
 
                 // Start listening for new cards
                 _gpio.OnRfidCardDetected += SaveNewCardOnRfidCardDetected;
 
-                savingNewCard = true;
+                _gpio.AddingNewRfidCard = true;
+
+                Status = "Waiting...";
             }
             else
             {
-                // Stop listening new cards
+                if (string.IsNullOrWhiteSpace(Input))
+                {
+                    Status = "Nothing Saved!";
+                }
+                else if (_authManager.Save(Input, out int newPasswordId))
+                {
+                    Clear();
+                    Status = $"Password Id {newPasswordId} Saved!";
+                }
+                else
+                {
+                    Status = "Failed to Save!";
+                }
+
+                // Stop listening for new cards
                 _gpio.OnRfidCardDetected -= SaveNewCardOnRfidCardDetected;
 
                 // Start listening for real again
                 _gpio.OnRfidCardDetected += gpio_OnRfidCardDetected;
 
-                savingNewCard = false;
+                _gpio.AddingNewRfidCard = false;
             }
 
-            AddCardButton.BackColor = savingNewCard ? Color.Green : Color.Transparent;
+            AddCardButton.BackColor = _gpio.AddingNewRfidCard ? Color.Green : Color.Transparent;
         }
 
         private void Admin_TurnOffLightsButton_Click(object sender, EventArgs e)
