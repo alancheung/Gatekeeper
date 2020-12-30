@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Unosquare.RaspberryIO.Abstractions;
 using Unosquare.RaspberryIO.Peripherals;
 
@@ -40,13 +41,17 @@ namespace GatekeeperCSharp.GPIO
 
         public void Toggle(BcmPin pin, GpioPinValue initial, TimeSpan duration)
         {
+            Task unlockTask = Task.Run(() => ToggleAction(pin, initial, duration));
+            unlockTask.Wait();
+        }
+
+        private void ToggleAction(BcmPin pin, GpioPinValue initial, TimeSpan duration)
+        {
             GpioPinValue next = initial == GpioPinValue.High ? GpioPinValue.Low : GpioPinValue.High;
-            state[pin].Add(initial);
-            state[pin].Add(next);
-
+            SetPin(pin, initial);
+            Console.WriteLine($"Sleeping for {duration.TotalMilliseconds} milliseconds.");
             Thread.Sleep(duration);
-
-            Console.WriteLine($"Set pin {pin} to {initial} then {next} after waiting for {duration.TotalMilliseconds} milliseconds.");
+            SetPin(pin, next);
         }
 
         public void InvokeOnRfidCardDetected()

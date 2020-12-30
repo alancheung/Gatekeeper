@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Abstractions;
 using Unosquare.RaspberryIO.Peripherals;
@@ -51,6 +49,12 @@ namespace GatekeeperCSharp.GPIO
         }
 
         public void Toggle(BcmPin pin, GpioPinValue initial, TimeSpan duration)
+        {
+            Task unlockTask = Task.Run(() => ToggleAction(pin, initial, duration));
+            unlockTask.Wait();
+        }
+
+        private void ToggleAction(BcmPin pin, GpioPinValue initial, TimeSpan duration)
         {
             GpioPinValue next = initial == GpioPinValue.High ? GpioPinValue.Low : GpioPinValue.High;
 
