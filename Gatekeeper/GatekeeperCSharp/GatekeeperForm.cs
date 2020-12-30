@@ -1,7 +1,12 @@
 ﻿using GatekeeperCSharp.Common;
 using GatekeeperCSharp.GPIO;
+using Swan.Formatters;
 using System;
+using System.Configuration;
 using System.Drawing;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unosquare.RaspberryIO.Abstractions;
 
@@ -315,7 +320,32 @@ namespace GatekeeperCSharp
 
         private void Admin_TurnOffLightsButton_Click(object sender, EventArgs e)
         {
-            // TODO
+            string server = ConfigurationManager.AppSettings["server"];
+            string lifxApiAddress = Uri.EscapeUriString($"{server}/api/lifx");
+
+            string[] lights = ConfigurationManager.AppSettings["lights"].Split(',');
+            object requestObj = new
+            {
+                Lights = lights,
+                TurnOff = true,
+                Duration = 1000,
+            };
+            StringContent content = new StringContent(Json.Serialize(requestObj), Encoding.UTF8, "application/json");
+
+            Task lightsOffTask = Task.Run(async () => 
+            {
+                try
+                {
+                    HttpClient client = new HttpClient();
+                    HttpResponseMessage response = await client.PostAsync(lifxApiAddress, content);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"Light request exception handled.");
+                }
+            });
+
+            lightsOffTask.Wait();
         }
         #endregion
     }
