@@ -196,7 +196,6 @@ namespace GatekeeperCSharp
                     Clear();
                     Status = $"Hello {id}";
                     AdminTablePanel.Visible = true;
-                    ToggleLock();
                 }
                 else
                 {
@@ -347,6 +346,16 @@ namespace GatekeeperCSharp
 
             lightsOffTask.Wait();
         }
+
+        private void Admin_ToggleLockButton_Click(object sender, EventArgs e)
+        {
+            ToggleLock();
+
+            // Exit from Admin mode
+            AdminButton_Click(sender, e);
+        }
         #endregion
+
+
     }
 }

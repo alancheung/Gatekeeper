@@ -37,6 +37,7 @@
             this.TriggerRfidButton = new System.Windows.Forms.Button();
             this.LoadPasswordButton = new System.Windows.Forms.Button();
             this.AddCardButton = new System.Windows.Forms.Button();
+            this.TurnOffLightsButton = new System.Windows.Forms.Button();
             this.RightTablePanel = new System.Windows.Forms.TableLayoutPanel();
             this.SubmitButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
@@ -44,6 +45,7 @@
             this.AdminButton = new System.Windows.Forms.Button();
             this.OneButton = new System.Windows.Forms.Button();
             this.TwoButton = new System.Windows.Forms.Button();
+            this.StatusLabel = new System.Windows.Forms.Label();
             this.ThreeButton = new System.Windows.Forms.Button();
             this.FourButton = new System.Windows.Forms.Button();
             this.FiveButton = new System.Windows.Forms.Button();
@@ -51,8 +53,7 @@
             this.SevenButton = new System.Windows.Forms.Button();
             this.EightButton = new System.Windows.Forms.Button();
             this.NineButton = new System.Windows.Forms.Button();
-            this.StatusLabel = new System.Windows.Forms.Label();
-            this.TurnOffLightsButton = new System.Windows.Forms.Button();
+            this.ToggleLockButton = new System.Windows.Forms.Button();
             this.MainPanel.SuspendLayout();
             this.AdminTablePanel.SuspendLayout();
             this.RightTablePanel.SuspendLayout();
@@ -83,6 +84,7 @@
             this.AdminTablePanel.Controls.Add(this.LoadPasswordButton, 0, 3);
             this.AdminTablePanel.Controls.Add(this.AddCardButton, 1, 4);
             this.AdminTablePanel.Controls.Add(this.TurnOffLightsButton, 0, 2);
+            this.AdminTablePanel.Controls.Add(this.ToggleLockButton, 3, 4);
             this.AdminTablePanel.Location = new System.Drawing.Point(0, 0);
             this.AdminTablePanel.Name = "AdminTablePanel";
             this.AdminTablePanel.RowCount = 5;
@@ -156,6 +158,16 @@
             this.AddCardButton.Text = "Add New RFID";
             this.AddCardButton.UseVisualStyleBackColor = true;
             this.AddCardButton.Click += new System.EventHandler(this.Admin_AddCardButton_Click);
+            // 
+            // TurnOffLightsButton
+            // 
+            this.TurnOffLightsButton.Location = new System.Drawing.Point(3, 195);
+            this.TurnOffLightsButton.Name = "TurnOffLightsButton";
+            this.TurnOffLightsButton.Size = new System.Drawing.Size(94, 90);
+            this.TurnOffLightsButton.TabIndex = 7;
+            this.TurnOffLightsButton.Text = "Turn Off Lights";
+            this.TurnOffLightsButton.UseVisualStyleBackColor = true;
+            this.TurnOffLightsButton.Click += new System.EventHandler(this.Admin_TurnOffLightsButton_Click);
             // 
             // RightTablePanel
             // 
@@ -263,6 +275,20 @@
             this.TwoButton.UseVisualStyleBackColor = false;
             this.TwoButton.Click += new System.EventHandler(this.NumberButton_Click);
             // 
+            // StatusLabel
+            // 
+            this.StatusLabel.BackColor = System.Drawing.SystemColors.Window;
+            this.StatusLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.StatusLabel.CausesValidation = false;
+            this.RightTablePanel.SetColumnSpan(this.StatusLabel, 3);
+            this.StatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StatusLabel.Location = new System.Drawing.Point(3, 0);
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(394, 93);
+            this.StatusLabel.TabIndex = 13;
+            this.StatusLabel.Text = "Initializing...";
+            this.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // ThreeButton
             // 
             this.ThreeButton.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
@@ -347,29 +373,15 @@
             this.NineButton.UseVisualStyleBackColor = false;
             this.NineButton.Click += new System.EventHandler(this.NumberButton_Click);
             // 
-            // StatusLabel
+            // ToggleLockButton
             // 
-            this.StatusLabel.BackColor = System.Drawing.SystemColors.Window;
-            this.StatusLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.StatusLabel.CausesValidation = false;
-            this.RightTablePanel.SetColumnSpan(this.StatusLabel, 3);
-            this.StatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.StatusLabel.Location = new System.Drawing.Point(3, 0);
-            this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(394, 93);
-            this.StatusLabel.TabIndex = 13;
-            this.StatusLabel.Text = "Initializing...";
-            this.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TurnOffLightsButton
-            // 
-            this.TurnOffLightsButton.Location = new System.Drawing.Point(3, 195);
-            this.TurnOffLightsButton.Name = "TurnOffLightsButton";
-            this.TurnOffLightsButton.Size = new System.Drawing.Size(94, 90);
-            this.TurnOffLightsButton.TabIndex = 7;
-            this.TurnOffLightsButton.Text = "Turn Off Lights";
-            this.TurnOffLightsButton.UseVisualStyleBackColor = true;
-            this.TurnOffLightsButton.Click += new System.EventHandler(this.Admin_TurnOffLightsButton_Click);
+            this.ToggleLockButton.Location = new System.Drawing.Point(303, 387);
+            this.ToggleLockButton.Name = "ToggleLockButton";
+            this.ToggleLockButton.Size = new System.Drawing.Size(94, 90);
+            this.ToggleLockButton.TabIndex = 8;
+            this.ToggleLockButton.Text = "Toggle Lock";
+            this.ToggleLockButton.UseVisualStyleBackColor = true;
+            this.ToggleLockButton.Click += new System.EventHandler(this.Admin_ToggleLockButton_Click);
             // 
             // GatekeeperForm
             // 
@@ -416,6 +428,7 @@
         private System.Windows.Forms.Button TriggerRfidButton;
         private System.Windows.Forms.Button AddCardButton;
         private System.Windows.Forms.Button TurnOffLightsButton;
+        private System.Windows.Forms.Button ToggleLockButton;
     }
 }
 
