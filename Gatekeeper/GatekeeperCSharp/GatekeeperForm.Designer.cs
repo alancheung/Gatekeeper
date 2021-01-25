@@ -30,6 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GatekeeperForm));
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.InformationTablePanel = new System.Windows.Forms.TableLayoutPanel();
+            this.InformationTitle = new System.Windows.Forms.Label();
+            this.CurrentWeatherIcon = new System.Windows.Forms.PictureBox();
             this.AdminTablePanel = new System.Windows.Forms.TableLayoutPanel();
             this.Admin_ExitButton = new System.Windows.Forms.Button();
             this.Admin_DebugButton = new System.Windows.Forms.Button();
@@ -38,6 +41,7 @@
             this.LoadPasswordButton = new System.Windows.Forms.Button();
             this.AddCardButton = new System.Windows.Forms.Button();
             this.TurnOffLightsButton = new System.Windows.Forms.Button();
+            this.ToggleLockButton = new System.Windows.Forms.Button();
             this.RightTablePanel = new System.Windows.Forms.TableLayoutPanel();
             this.SubmitButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
@@ -53,22 +57,72 @@
             this.SevenButton = new System.Windows.Forms.Button();
             this.EightButton = new System.Windows.Forms.Button();
             this.NineButton = new System.Windows.Forms.Button();
-            this.ToggleLockButton = new System.Windows.Forms.Button();
+            this.CurrentWeatherLabel = new System.Windows.Forms.Label();
+            this.LastWeatherUpdateLabel = new System.Windows.Forms.Label();
             this.MainPanel.SuspendLayout();
+            this.InformationTablePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentWeatherIcon)).BeginInit();
             this.AdminTablePanel.SuspendLayout();
             this.RightTablePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainPanel
             // 
-            this.MainPanel.Controls.Add(this.AdminTablePanel);
             this.MainPanel.Controls.Add(this.RightTablePanel);
+            this.MainPanel.Controls.Add(this.InformationTablePanel);
+            this.MainPanel.Controls.Add(this.AdminTablePanel);
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.MainPanel.Location = new System.Drawing.Point(0, 0);
             this.MainPanel.Margin = new System.Windows.Forms.Padding(0);
             this.MainPanel.Name = "MainPanel";
             this.MainPanel.Size = new System.Drawing.Size(800, 494);
             this.MainPanel.TabIndex = 0;
+            // 
+            // InformationTablePanel
+            // 
+            this.InformationTablePanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.InformationTablePanel.ColumnCount = 2;
+            this.InformationTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.InformationTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.InformationTablePanel.Controls.Add(this.InformationTitle, 0, 0);
+            this.InformationTablePanel.Controls.Add(this.CurrentWeatherIcon, 0, 1);
+            this.InformationTablePanel.Controls.Add(this.LastWeatherUpdateLabel, 0, 4);
+            this.InformationTablePanel.Controls.Add(this.CurrentWeatherLabel, 1, 1);
+            this.InformationTablePanel.Location = new System.Drawing.Point(0, 0);
+            this.InformationTablePanel.Name = "InformationTablePanel";
+            this.InformationTablePanel.RowCount = 6;
+            this.InformationTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.InformationTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.InformationTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.InformationTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.InformationTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.InformationTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.InformationTablePanel.Size = new System.Drawing.Size(400, 477);
+            this.InformationTablePanel.TabIndex = 9;
+            // 
+            // InformationTitle
+            // 
+            this.InformationTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.InformationTablePanel.SetColumnSpan(this.InformationTitle, 2);
+            this.InformationTitle.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.InformationTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.InformationTitle.Location = new System.Drawing.Point(3, 0);
+            this.InformationTitle.Name = "InformationTitle";
+            this.InformationTitle.Size = new System.Drawing.Size(391, 50);
+            this.InformationTitle.TabIndex = 0;
+            this.InformationTitle.Text = "Current Conditions";
+            this.InformationTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // CurrentWeatherIcon
+            // 
+            this.CurrentWeatherIcon.Image = global::GatekeeperCSharp.Properties.Resources.favicon;
+            this.CurrentWeatherIcon.InitialImage = global::GatekeeperCSharp.Properties.Resources.favicon;
+            this.CurrentWeatherIcon.Location = new System.Drawing.Point(3, 53);
+            this.CurrentWeatherIcon.Name = "CurrentWeatherIcon";
+            this.CurrentWeatherIcon.Size = new System.Drawing.Size(94, 114);
+            this.CurrentWeatherIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.CurrentWeatherIcon.TabIndex = 1;
+            this.CurrentWeatherIcon.TabStop = false;
             // 
             // AdminTablePanel
             // 
@@ -93,7 +147,7 @@
             this.AdminTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.AdminTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.AdminTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.AdminTablePanel.Size = new System.Drawing.Size(400, 480);
+            this.AdminTablePanel.Size = new System.Drawing.Size(400, 477);
             this.AdminTablePanel.TabIndex = 1;
             this.AdminTablePanel.Visible = false;
             // 
@@ -102,7 +156,7 @@
             this.Admin_ExitButton.BackColor = System.Drawing.Color.Red;
             this.Admin_ExitButton.Location = new System.Drawing.Point(3, 3);
             this.Admin_ExitButton.Name = "Admin_ExitButton";
-            this.Admin_ExitButton.Size = new System.Drawing.Size(94, 90);
+            this.Admin_ExitButton.Size = new System.Drawing.Size(94, 89);
             this.Admin_ExitButton.TabIndex = 1;
             this.Admin_ExitButton.Text = "Final Exit";
             this.Admin_ExitButton.UseVisualStyleBackColor = false;
@@ -113,7 +167,7 @@
             this.Admin_DebugButton.BackColor = System.Drawing.Color.Transparent;
             this.Admin_DebugButton.Location = new System.Drawing.Point(103, 3);
             this.Admin_DebugButton.Name = "Admin_DebugButton";
-            this.Admin_DebugButton.Size = new System.Drawing.Size(94, 90);
+            this.Admin_DebugButton.Size = new System.Drawing.Size(94, 89);
             this.Admin_DebugButton.TabIndex = 0;
             this.Admin_DebugButton.Text = "Debug";
             this.Admin_DebugButton.UseVisualStyleBackColor = false;
@@ -121,7 +175,7 @@
             // 
             // AddPasswordButton
             // 
-            this.AddPasswordButton.Location = new System.Drawing.Point(3, 387);
+            this.AddPasswordButton.Location = new System.Drawing.Point(3, 383);
             this.AddPasswordButton.Name = "AddPasswordButton";
             this.AddPasswordButton.Size = new System.Drawing.Size(94, 90);
             this.AddPasswordButton.TabIndex = 2;
@@ -133,7 +187,7 @@
             // 
             this.TriggerRfidButton.Location = new System.Drawing.Point(303, 3);
             this.TriggerRfidButton.Name = "TriggerRfidButton";
-            this.TriggerRfidButton.Size = new System.Drawing.Size(94, 90);
+            this.TriggerRfidButton.Size = new System.Drawing.Size(94, 89);
             this.TriggerRfidButton.TabIndex = 5;
             this.TriggerRfidButton.Text = "Trigger RFID";
             this.TriggerRfidButton.UseVisualStyleBackColor = true;
@@ -141,9 +195,9 @@
             // 
             // LoadPasswordButton
             // 
-            this.LoadPasswordButton.Location = new System.Drawing.Point(3, 291);
+            this.LoadPasswordButton.Location = new System.Drawing.Point(3, 288);
             this.LoadPasswordButton.Name = "LoadPasswordButton";
-            this.LoadPasswordButton.Size = new System.Drawing.Size(94, 90);
+            this.LoadPasswordButton.Size = new System.Drawing.Size(94, 89);
             this.LoadPasswordButton.TabIndex = 4;
             this.LoadPasswordButton.Text = "Load Passwords";
             this.LoadPasswordButton.UseVisualStyleBackColor = true;
@@ -151,7 +205,7 @@
             // 
             // AddCardButton
             // 
-            this.AddCardButton.Location = new System.Drawing.Point(103, 387);
+            this.AddCardButton.Location = new System.Drawing.Point(103, 383);
             this.AddCardButton.Name = "AddCardButton";
             this.AddCardButton.Size = new System.Drawing.Size(94, 90);
             this.AddCardButton.TabIndex = 6;
@@ -161,13 +215,23 @@
             // 
             // TurnOffLightsButton
             // 
-            this.TurnOffLightsButton.Location = new System.Drawing.Point(3, 195);
+            this.TurnOffLightsButton.Location = new System.Drawing.Point(3, 193);
             this.TurnOffLightsButton.Name = "TurnOffLightsButton";
-            this.TurnOffLightsButton.Size = new System.Drawing.Size(94, 90);
+            this.TurnOffLightsButton.Size = new System.Drawing.Size(94, 89);
             this.TurnOffLightsButton.TabIndex = 7;
             this.TurnOffLightsButton.Text = "Turn Off Lights";
             this.TurnOffLightsButton.UseVisualStyleBackColor = true;
             this.TurnOffLightsButton.Click += new System.EventHandler(this.Admin_TurnOffLightsButton_Click);
+            // 
+            // ToggleLockButton
+            // 
+            this.ToggleLockButton.Location = new System.Drawing.Point(303, 383);
+            this.ToggleLockButton.Name = "ToggleLockButton";
+            this.ToggleLockButton.Size = new System.Drawing.Size(94, 90);
+            this.ToggleLockButton.TabIndex = 8;
+            this.ToggleLockButton.Text = "Toggle Lock";
+            this.ToggleLockButton.UseVisualStyleBackColor = true;
+            this.ToggleLockButton.Click += new System.EventHandler(this.Admin_ToggleLockButton_Click);
             // 
             // RightTablePanel
             // 
@@ -373,15 +437,27 @@
             this.NineButton.UseVisualStyleBackColor = false;
             this.NineButton.Click += new System.EventHandler(this.NumberButton_Click);
             // 
-            // ToggleLockButton
+            // CurrentWeatherLabel
             // 
-            this.ToggleLockButton.Location = new System.Drawing.Point(303, 387);
-            this.ToggleLockButton.Name = "ToggleLockButton";
-            this.ToggleLockButton.Size = new System.Drawing.Size(94, 90);
-            this.ToggleLockButton.TabIndex = 8;
-            this.ToggleLockButton.Text = "Toggle Lock";
-            this.ToggleLockButton.UseVisualStyleBackColor = true;
-            this.ToggleLockButton.Click += new System.EventHandler(this.Admin_ToggleLockButton_Click);
+            this.CurrentWeatherLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.CurrentWeatherLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurrentWeatherLabel.Location = new System.Drawing.Point(103, 53);
+            this.CurrentWeatherLabel.Name = "CurrentWeatherLabel";
+            this.CurrentWeatherLabel.Size = new System.Drawing.Size(294, 113);
+            this.CurrentWeatherLabel.TabIndex = 2;
+            this.CurrentWeatherLabel.Text = "Unknown";
+            this.CurrentWeatherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // LastWeatherUpdateLabel
+            // 
+            this.LastWeatherUpdateLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.LastWeatherUpdateLabel.AutoSize = true;
+            this.InformationTablePanel.SetColumnSpan(this.LastWeatherUpdateLabel, 2);
+            this.LastWeatherUpdateLabel.Location = new System.Drawing.Point(138, 170);
+            this.LastWeatherUpdateLabel.Name = "LastWeatherUpdateLabel";
+            this.LastWeatherUpdateLabel.Size = new System.Drawing.Size(124, 13);
+            this.LastWeatherUpdateLabel.TabIndex = 3;
+            this.LastWeatherUpdateLabel.Text = "Last Updated: undefined";
             // 
             // GatekeeperForm
             // 
@@ -398,6 +474,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gatekeeper - DEBUG";
             this.MainPanel.ResumeLayout(false);
+            this.InformationTablePanel.ResumeLayout(false);
+            this.InformationTablePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentWeatherIcon)).EndInit();
             this.AdminTablePanel.ResumeLayout(false);
             this.RightTablePanel.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -429,6 +508,11 @@
         private System.Windows.Forms.Button AddCardButton;
         private System.Windows.Forms.Button TurnOffLightsButton;
         private System.Windows.Forms.Button ToggleLockButton;
+        private System.Windows.Forms.TableLayoutPanel InformationTablePanel;
+        private System.Windows.Forms.Label InformationTitle;
+        private System.Windows.Forms.PictureBox CurrentWeatherIcon;
+        private System.Windows.Forms.Label CurrentWeatherLabel;
+        private System.Windows.Forms.Label LastWeatherUpdateLabel;
     }
 }
 

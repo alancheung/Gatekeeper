@@ -1,4 +1,5 @@
 ﻿using GatekeeperCSharp.GPIO;
+using GatekeeperCSharp.Key;
 using System;
 using System.Configuration;
 using System.Windows.Forms;
@@ -44,15 +45,17 @@ namespace GatekeeperCSharp
                 {
                     gpio = new GpioManagerSimulator();
                 }
-                gpio.Initialize(relayPin.Value, GpioPinDriveMode.Output);
 
+                gpio.Initialize(relayPin.Value, GpioPinDriveMode.Output);
                 AuthenticationManager authentication = new AuthenticationManager();
+                Weatherman ollieWilliams = new Weatherman(APIKeys.API);
+                ollieWilliams.SetUpdateInterval(TimeSpan.FromMinutes(30));
 
                 // Initialize application settings.
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                Form form = new GatekeeperForm(authentication, gpio, relayPin.Value, openTime);
+                Form form = new GatekeeperForm(authentication, ollieWilliams, gpio, relayPin.Value, openTime);
                 Application.Run(form);
             }
             finally

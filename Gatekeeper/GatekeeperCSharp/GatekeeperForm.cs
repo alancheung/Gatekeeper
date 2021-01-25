@@ -4,11 +4,13 @@ using Swan.Formatters;
 using System;
 using System.Configuration;
 using System.Drawing;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unosquare.RaspberryIO.Abstractions;
+using WeatherNet.Model;
 
 namespace GatekeeperCSharp
 {
@@ -28,6 +30,11 @@ namespace GatekeeperCSharp
         /// Manage all authentication requests and workflows.
         /// </summary>
         private readonly AuthenticationManager _authManager;
+
+        /// <summary>
+        /// Manage weather related requests.
+        /// </summary>
+        private readonly Weatherman _ollieWilliams;
 
         /// <summary>
         /// Control over GPIO.
@@ -88,18 +95,45 @@ namespace GatekeeperCSharp
         /// <param name="gpioManager"></param>
         /// <param name="relayPin"></param>
         /// <param name="openTime"></param>
-        public GatekeeperForm(AuthenticationManager authentication, IGpioManager gpioManager, BcmPin relayPin, TimeSpan openTime)
+        public GatekeeperForm(AuthenticationManager authentication, Weatherman ollieWilliams, IGpioManager gpioManager, BcmPin relayPin, TimeSpan openTime)
         {
             InitializeComponent();
             InitializeFormHeader();
 
             _authManager = authentication;
+            _ollieWilliams = ollieWilliams;
             _gpio = gpioManager;
             _relayPin = relayPin;
             _openTime = openTime;
+
+            _ollieWilliams.OnCurrentWeatherUpdate += _ollieWilliams_OnCurrentWeatherUpdate;
             _gpio.OnRfidCardDetected += gpio_OnRfidCardDetected;
 
             Clear();
+
+            // First load
+            _ollieWilliams.UpdateWeather();
+        }
+
+        /// <summary>
+        /// Event triggered when <see cref="Weatherman"/> has a current weather update
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _ollieWilliams_OnCurrentWeatherUpdate(object sender, SingleResult<CurrentWeatherResult> e)
+        {
+            string icon = Path.Combine(Weatherman.ImageFolderPath, e.Item.Icon);
+            icon = Path.ChangeExtension(icon, "png");
+            CurrentWeatherIcon.ImageLocation = icon;
+
+            StringBuilder weatherBuilder = new StringBuilder();
+            weatherBuilder.AppendLine($"{e.Item.Title} - {e.Item.Description}");
+            weatherBuilder.AppendLine($"Current: {e.Item.Temp}°F");
+            weatherBuilder.AppendLine($"Forecast: {e.Item.TempMin}°F / {e.Item.TempMax}°F");
+            weatherBuilder.AppendLine($"Humidity: {e.Item.Humidity}%");
+            CurrentWeatherLabel.Text = weatherBuilder.ToString();
+
+            LastWeatherUpdateLabel.Text = $"Last Updated: {_ollieWilliams.LastUpdate.ToString("HH:mm")} - Next: {_ollieWilliams.NextUpdate.ToString("HH:mm")}";
         }
 
         /// <summary>
@@ -210,6 +244,7 @@ namespace GatekeeperCSharp
             }
 
             SubmitButton.Enabled = !AdminTablePanel.Visible;
+            InformationTablePanel.Visible = !AdminTablePanel.Visible;
         }
 
         private void SubmitButton_Click(object sender, EventArgs e)
@@ -231,7 +266,7 @@ namespace GatekeeperCSharp
         #region Admin Button Listeners
         private void Admin_DebugButton_Click(object sender, EventArgs e)
         {
-
+            _ollieWilliams.UpdateWeather();
         }
 
         private void Admin_ExitButton_Click(object sender, EventArgs e)
