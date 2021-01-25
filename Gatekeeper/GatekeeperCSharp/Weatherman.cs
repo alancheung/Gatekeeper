@@ -22,7 +22,6 @@ namespace GatekeeperCSharp
             StringBuilder weatherBuilder = new StringBuilder();
             weatherBuilder.AppendLine($"{update.Item.Title} - {update.Item.Description}");
             weatherBuilder.AppendLine($"Current: {update.Item.Temp}°F");
-            weatherBuilder.AppendLine($"Forecast: {update.Item.TempMin}°F / {update.Item.TempMax}°F");
             weatherBuilder.AppendLine($"Humidity: {update.Item.Humidity}%");
             Description = weatherBuilder.ToString();
 
