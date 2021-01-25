@@ -1,8 +1,9 @@
 ﻿using GatekeeperCSharp.Key;
 using Newtonsoft.Json;
 using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Timers;
 using WeatherNet.Clients;
@@ -15,25 +16,32 @@ namespace GatekeeperCSharp
     /// </summary>
     public class UIWeatherUpdate : EventArgs
     {
-        public UIWeatherUpdate(SingleResult<CurrentWeatherResult> update)
+        public UIWeatherUpdate(WeatherResult update)
         {
-            Title = $"{update.Item.Title} - {update.Item.Description}";
+            Result = update;
+            TimeStamp = update.Date;
+            Title = $"{update.Title} - {update.Description}";
 
             StringBuilder weatherBuilder = new StringBuilder();
-            weatherBuilder.AppendLine($"{update.Item.Title} - {update.Item.Description}");
-            weatherBuilder.AppendLine($"Current: {update.Item.Temp}°F");
-            weatherBuilder.AppendLine($"Humidity: {update.Item.Humidity}%");
+            weatherBuilder.AppendLine($"{update.Title} - {update.Description}");
+            weatherBuilder.AppendLine($"Time: {TimeStamp.ToString("M/d/yy @ HH:mm")}");
+            weatherBuilder.AppendLine($"Current: {update.Temp}°F");
+            weatherBuilder.AppendLine($"Humidity: {update.Humidity}%");
             Description = weatherBuilder.ToString();
 
-            string icon = Path.Combine(Weatherman.ImageFolderPath, update.Item.Icon);
+            string icon = Path.Combine(Weatherman.ImageFolderPath, update.Icon);
             icon = Path.ChangeExtension(icon, "png");
             IconPath = icon;
+
         }
 
         public string Title { get; set; }
         public string Description { get; set; }
         public string IconPath { get; set; }
         public string LastUpdate { get; set; }
+        public DateTimeOffset TimeStamp { get; set; }
+
+        public WeatherResult Result { get; set; }
     }
 
     public class Weatherman
@@ -46,24 +54,40 @@ namespace GatekeeperCSharp
         /// <summary>
         /// Calculated time of the next update. This is not exact due to timer limitations.
         /// </summary>
-        public DateTimeOffset NextUpdate => LastUpdate != default && _timer != null
-            ? LastUpdate.Add(TimeSpan.FromMilliseconds(_timer.Interval))
+        public DateTimeOffset NextUpdate => LastUpdate != default && _currentWeatherTimer != null
+            ? LastUpdate.Add(TimeSpan.FromMilliseconds(_currentWeatherTimer.Interval))
             : DateTimeOffset.MinValue;
 
         /// <summary>
-        /// Internal timer to schedule regular UI updates
+        /// Internal timer to schedule regular UI updates for the current weather
         /// </summary>
-        private Timer _timer;
+        private Timer _currentWeatherTimer;
+
+        /// <summary>
+        /// 
+        /// Internal timer to schedule regular UI updates for forecasted weather.
+        /// </summary>
+        private Timer _forecastWeatherTimer;
 
         /// <summary>
         /// The cached results of the weather update.
         /// </summary>
-        private CurrentWeatherResult _currentWeather;
+        private SingleResult<CurrentWeatherResult> _currentWeather;
+
+        /// <summary>
+        /// The cached results of the weather forecast.
+        /// </summary>
+        private Result<FiveDaysForecastResult> _forecastWeather;
 
         /// <summary>
         /// Event fired when the weather has been updated.
         /// </summary>
         public EventHandler<UIWeatherUpdate> OnCurrentWeatherUpdate;
+
+        /// <summary>
+        /// Event fired when the forecasted weather has been updated.
+        /// </summary>
+        public EventHandler<UIWeatherUpdate[]> OnForecastUpdate;
 
         /// <summary>
         /// Path the assets folder.
@@ -95,28 +119,50 @@ namespace GatekeeperCSharp
         /// <summary>
         /// Initializes and sets up the timer for regular updates.
         /// </summary>
-        /// <param name="interval">The time interval until the next update.</param>
-        public void SetUpdateInterval(TimeSpan interval)
+        /// <param name="currentWeatherInterval">The time interval until the next update.</param>
+        /// <param name="forecastUpdateInterval">The time interval until the next forecasted weather update.</param>
+        public void SetUpdateInterval(TimeSpan? currentWeatherInterval = null, TimeSpan? forecastUpdateInterval = null)
         {
-            if (interval.TotalMilliseconds > 0)
+            if (currentWeatherInterval.HasValue && currentWeatherInterval.Value.TotalMilliseconds > 0)
             {
-                if (_timer == null)
+                if (_currentWeatherTimer == null)
                 {
-                    _timer = new Timer(interval.TotalMilliseconds);
-                    _timer.AutoReset = true;
-                    _timer.Enabled = true;
-                    _timer.Elapsed += (object sender, ElapsedEventArgs e) => UpdateWeather();
+                    _currentWeatherTimer = new Timer(currentWeatherInterval.Value.TotalMilliseconds);
+                    _currentWeatherTimer.AutoReset = true;
+                    _currentWeatherTimer.Enabled = true;
+                    _currentWeatherTimer.Elapsed += (object sender, ElapsedEventArgs e) => UpdateWeather();
                 }
 
-                _timer.Stop();
-                _timer.Interval = interval.TotalMilliseconds;
-                _timer.Start();
+                _currentWeatherTimer.Stop();
+                _currentWeatherTimer.Interval = currentWeatherInterval.Value.TotalMilliseconds;
+                _currentWeatherTimer.Start();
             }
             else
             {
-                _timer.Stop();
-                _timer?.Dispose();
-                _timer = null;
+                _currentWeatherTimer.Stop();
+                _currentWeatherTimer?.Dispose();
+                _currentWeatherTimer = null;
+            }
+
+            if (forecastUpdateInterval.HasValue && forecastUpdateInterval.Value.TotalMilliseconds > 0)
+            {
+                if (_forecastWeatherTimer == null)
+                {
+                    _forecastWeatherTimer = new Timer(forecastUpdateInterval.Value.TotalMilliseconds);
+                    _forecastWeatherTimer.AutoReset = true;
+                    _forecastWeatherTimer.Enabled = true;
+                    _forecastWeatherTimer.Elapsed += (object sender, ElapsedEventArgs e) => UpdateForecast();
+                }
+
+                _forecastWeatherTimer.Stop();
+                _forecastWeatherTimer.Interval = forecastUpdateInterval.Value.TotalMilliseconds;
+                _forecastWeatherTimer.Start();
+            }
+            else
+            {
+                _forecastWeatherTimer.Stop();
+                _forecastWeatherTimer?.Dispose();
+                _forecastWeatherTimer = null;
             }
         }
 
@@ -143,7 +189,8 @@ namespace GatekeeperCSharp
             {
                 LastUpdate = DateTimeOffset.Now;
                 LastUpdateFailed = false;
-                _currentWeather = result.Item;
+                _currentWeather = result;
+                result.Item.Date = TimeZone.CurrentTimeZone.ToLocalTime(result.Item.Date);
             }
             else
             {
@@ -151,11 +198,97 @@ namespace GatekeeperCSharp
                 Console.WriteLine($"Weather update failed with message: {result.Message}");
             }
 
-            UIWeatherUpdate forUi = new UIWeatherUpdate(result);
+            UIWeatherUpdate forUi = new UIWeatherUpdate(result.Item);
             forUi.LastUpdate = $"Last Updated: {LastUpdate.ToString("HH:mm")} - Next: {NextUpdate.ToString("HH:mm")}";
 
             OnCurrentWeatherUpdate?.Invoke(this, forUi);
             return result.Success;
+        }
+
+        public bool UpdateForecast()
+        {
+            Result<FiveDaysForecastResult> result;
+            if (UseRealWeather)
+            {
+                result = FiveDaysForecast.GetByCoordinates(APIKeys.Latitude, APIKeys.Longitude, "en", "imperial");
+
+                File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "fakeForecast.json"), JsonConvert.SerializeObject(result));
+            }
+            else
+            {
+                string debugWeatherFilePath = Path.Combine(Environment.CurrentDirectory, "fakeForecast.json");
+                string fakeWeatherJson = File.ReadAllText(debugWeatherFilePath);
+                result = JsonConvert.DeserializeObject<Result<FiveDaysForecastResult>>(fakeWeatherJson);
+                Console.WriteLine("Faked weather results!");
+            }
+
+            if (result.Success)
+            {
+                LastUpdate = DateTimeOffset.Now;
+                LastUpdateFailed = false;
+                _forecastWeather = result;
+                result.Items.ForEach(r => r.Date = TimeZone.CurrentTimeZone.ToLocalTime(r.Date));
+            }
+            else
+            {
+                LastUpdateFailed = true;
+                Console.WriteLine($"Weather update failed with message: {result.Message}");
+            }
+
+            // Determine the most severe weather during the next few days and choose those values to show.
+            Dictionary<DateTime, FiveDaysForecastResult> highestRank = result.Items
+                .GroupBy(grp => grp.Date.Date)
+                .ToDictionary(grp => grp.Key, grp => HighestRankingWeatherUpdate(grp));
+
+            UIWeatherUpdate[] forUi = highestRank.Values
+                .Select(f => new UIWeatherUpdate(f))
+                .ToArray();
+            OnForecastUpdate?.Invoke(this, forUi);
+
+            return result.Success;
+        }
+
+        private FiveDaysForecastResult HighestRankingWeatherUpdate(IGrouping<DateTime, FiveDaysForecastResult> group)
+        {
+            Dictionary<string, int> weatherRanking = new Dictionary<string, int>()
+            {
+                { "Clear",  0 },
+                { "Clouds",  1 },
+                { "Drizzle",  2 },
+                { "Rain",  3 },
+                { "Thunderstorm",  4 },
+                { "Snow",  5 },
+                { "Atmosphere",  6 },
+            };
+
+            FiveDaysForecastResult highestResult = group.First();
+            foreach(FiveDaysForecastResult forecast in group)
+            {
+                // If the result is already the highest rank stop searching.
+                if (weatherRanking[highestResult.Title] == 6)
+                {
+                    break;
+                }
+
+                if (weatherRanking.ContainsKey(forecast.Title))
+                {
+                    // "Update highest result if:
+                    //      the titles are different and the rank of the current forecast is higher than the highest result
+                    //      or the highest result is not serious and is before 9AM and the latest forecast is after 9"
+                    if ((forecast.Title != highestResult.Title && weatherRanking[forecast.Title] > weatherRanking[highestResult.Title])
+                        || (weatherRanking[highestResult.Title] < 3 && highestResult.Date.Hour < 9 && forecast.Date.Hour >= 9))
+                    {
+                        highestResult = forecast;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Unknown weather title {forecast.Title}!");
+                    highestResult = forecast;
+                }
+            }
+
+            return highestResult;
         }
     }
 }

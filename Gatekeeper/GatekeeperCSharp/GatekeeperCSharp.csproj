@@ -134,6 +134,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Assets\fakeForecast.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\fakeWeather.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

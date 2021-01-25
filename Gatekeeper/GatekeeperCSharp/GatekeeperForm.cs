@@ -4,13 +4,12 @@ using Swan.Formatters;
 using System;
 using System.Configuration;
 using System.Drawing;
-using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unosquare.RaspberryIO.Abstractions;
-using WeatherNet.Model;
 
 namespace GatekeeperCSharp
 {
@@ -68,7 +67,7 @@ namespace GatekeeperCSharp
                 }
                 else if (textLength > 24)
                 {
-                    StatusLabel.Font = new Font(StatusLabel.Font.FontFamily, 18); 
+                    StatusLabel.Font = new Font(StatusLabel.Font.FontFamily, 18);
                 }
                 else if (StatusLabel.Text.Length > 12)
                 {
@@ -106,6 +105,7 @@ namespace GatekeeperCSharp
             _openTime = openTime;
 
             _ollieWilliams.OnCurrentWeatherUpdate += _ollieWilliams_OnCurrentWeatherUpdate;
+            _ollieWilliams.OnForecastUpdate += _ollieWilliams_OnForecastUpdate;
             _gpio.OnRfidCardDetected += gpio_OnRfidCardDetected;
 
             InitializeFormHeader();
@@ -113,6 +113,7 @@ namespace GatekeeperCSharp
 
             // First load
             _ollieWilliams.UpdateWeather();
+            _ollieWilliams.UpdateForecast();
         }
 
         /// <summary>
@@ -123,8 +124,25 @@ namespace GatekeeperCSharp
         private void _ollieWilliams_OnCurrentWeatherUpdate(object sender, UIWeatherUpdate update)
         {
             CurrentWeatherIcon.ImageLocation = update.IconPath;
+            CurrentWeatherTitleLabel.Text = update.Title;
             CurrentWeatherLabel.Text = update.Description;
             LastWeatherUpdateLabel.Text = update.LastUpdate;
+        }
+
+        /// <summary>
+        /// Event triggered when <see cref="Weatherman"/> has a forecast update
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="update"></param>
+        private void _ollieWilliams_OnForecastUpdate(object sender, UIWeatherUpdate[] updates)
+        {
+            UIWeatherUpdate tomorrow = updates.First(u => u.TimeStamp.Date == DateTimeOffset.Now.AddDays(1).Date);
+            TomorrowWeatherIcon.ImageLocation = tomorrow.IconPath;
+            TomorrowWeatherLabel.Text = tomorrow.Description;
+
+            UIWeatherUpdate threeDay = updates.First(u => u.TimeStamp.Date == DateTimeOffset.Now.AddDays(2).Date);
+            ThreeDayWeatherIcon.ImageLocation = threeDay.IconPath;
+            ThreeDayWeatherLabel.Text = threeDay.Description;
         }
 
         /// <summary>
@@ -260,6 +278,7 @@ namespace GatekeeperCSharp
         private void Admin_DebugButton_Click(object sender, EventArgs e)
         {
             _ollieWilliams.UpdateWeather();
+            _ollieWilliams.UpdateForecast();
         }
 
         private void Admin_ExitButton_Click(object sender, EventArgs e)
@@ -359,7 +378,7 @@ namespace GatekeeperCSharp
             };
             StringContent content = new StringContent(Json.Serialize(requestObj), Encoding.UTF8, "application/json");
 
-            Task lightsOffTask = Task.Run(async () => 
+            Task lightsOffTask = Task.Run(async () =>
             {
                 try
                 {
@@ -392,6 +411,7 @@ namespace GatekeeperCSharp
         private void Admin_UpdateWeatherButton_Click(object sender, EventArgs e)
         {
             _ollieWilliams.UpdateWeather();
+            _ollieWilliams.UpdateForecast();
         }
         #endregion
     }

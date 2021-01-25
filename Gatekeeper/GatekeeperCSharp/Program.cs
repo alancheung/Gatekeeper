@@ -35,6 +35,8 @@ namespace GatekeeperCSharp
                 // Read configuration values
                 relayPin = (BcmPin)int.Parse(ConfigurationManager.AppSettings["relay_pin"]);
                 TimeSpan openTime = TimeSpan.FromMilliseconds(double.Parse(ConfigurationManager.AppSettings["open_time"]));
+                TimeSpan weatherUpdate = TimeSpan.FromMinutes(double.Parse(ConfigurationManager.AppSettings["WeatherUpdateMins"]));
+                TimeSpan forecastUpdate = TimeSpan.FromMinutes(double.Parse(ConfigurationManager.AppSettings["ForecastUpdateMins"]));
 
                 // Initialize gpio for simulated or real runs.
                 if (RELEASE)
@@ -49,7 +51,7 @@ namespace GatekeeperCSharp
                 gpio.Initialize(relayPin.Value, GpioPinDriveMode.Output);
                 AuthenticationManager authentication = new AuthenticationManager();
                 Weatherman ollieWilliams = new Weatherman(APIKeys.API, RELEASE);
-                ollieWilliams.SetUpdateInterval(TimeSpan.FromMinutes(30));
+                ollieWilliams.SetUpdateInterval(weatherUpdate, forecastUpdate);
 
                 // Initialize application settings.
                 Application.EnableVisualStyles();
