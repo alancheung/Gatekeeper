@@ -98,7 +98,6 @@ namespace GatekeeperCSharp
         public GatekeeperForm(AuthenticationManager authentication, Weatherman ollieWilliams, IGpioManager gpioManager, BcmPin relayPin, TimeSpan openTime)
         {
             InitializeComponent();
-            InitializeFormHeader();
 
             _authManager = authentication;
             _ollieWilliams = ollieWilliams;
@@ -109,6 +108,7 @@ namespace GatekeeperCSharp
             _ollieWilliams.OnCurrentWeatherUpdate += _ollieWilliams_OnCurrentWeatherUpdate;
             _gpio.OnRfidCardDetected += gpio_OnRfidCardDetected;
 
+            InitializeFormHeader();
             Clear();
 
             // First load
@@ -119,21 +119,12 @@ namespace GatekeeperCSharp
         /// Event triggered when <see cref="Weatherman"/> has a current weather update
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _ollieWilliams_OnCurrentWeatherUpdate(object sender, SingleResult<CurrentWeatherResult> e)
+        /// <param name="update"></param>
+        private void _ollieWilliams_OnCurrentWeatherUpdate(object sender, UIWeatherUpdate update)
         {
-            string icon = Path.Combine(Weatherman.ImageFolderPath, e.Item.Icon);
-            icon = Path.ChangeExtension(icon, "png");
-            CurrentWeatherIcon.ImageLocation = icon;
-
-            StringBuilder weatherBuilder = new StringBuilder();
-            weatherBuilder.AppendLine($"{e.Item.Title} - {e.Item.Description}");
-            weatherBuilder.AppendLine($"Current: {e.Item.Temp}°F");
-            weatherBuilder.AppendLine($"Forecast: {e.Item.TempMin}°F / {e.Item.TempMax}°F");
-            weatherBuilder.AppendLine($"Humidity: {e.Item.Humidity}%");
-            CurrentWeatherLabel.Text = weatherBuilder.ToString();
-
-            LastWeatherUpdateLabel.Text = $"Last Updated: {_ollieWilliams.LastUpdate.ToString("HH:mm")} - Next: {_ollieWilliams.NextUpdate.ToString("HH:mm")}";
+            CurrentWeatherIcon.ImageLocation = update.IconPath;
+            CurrentWeatherLabel.Text = update.Description;
+            LastWeatherUpdateLabel.Text = update.LastUpdate;
         }
 
         /// <summary>
@@ -191,6 +182,8 @@ namespace GatekeeperCSharp
             {
                 Text = "Gatekeeper - DEBUG";
             }
+
+            WeatherSourceButton.Text = $"Use {(_ollieWilliams.UseRealWeather ? "Fake" : "Real")} Weather";
         }
 
         /// <summary>
@@ -244,7 +237,7 @@ namespace GatekeeperCSharp
             }
 
             SubmitButton.Enabled = !AdminTablePanel.Visible;
-            InformationTablePanel.Visible = !AdminTablePanel.Visible;
+            InformationPanel.Visible = !AdminTablePanel.Visible;
         }
 
         private void SubmitButton_Click(object sender, EventArgs e)
@@ -389,8 +382,17 @@ namespace GatekeeperCSharp
             // Exit from Admin mode
             AdminButton_Click(sender, e);
         }
+
+        private void Admin_WeatherSourceButton_Click(object sender, EventArgs e)
+        {
+            _ollieWilliams.UseRealWeather = !_ollieWilliams.UseRealWeather;
+            WeatherSourceButton.Text = $"Use {(_ollieWilliams.UseRealWeather ? "Fake" : "Real")} Weather";
+        }
+
+        private void Admin_UpdateWeatherButton_Click(object sender, EventArgs e)
+        {
+            _ollieWilliams.UpdateWeather();
+        }
         #endregion
-
-
     }
 }

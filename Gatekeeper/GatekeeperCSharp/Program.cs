@@ -48,7 +48,7 @@ namespace GatekeeperCSharp
 
                 gpio.Initialize(relayPin.Value, GpioPinDriveMode.Output);
                 AuthenticationManager authentication = new AuthenticationManager();
-                Weatherman ollieWilliams = new Weatherman(APIKeys.API);
+                Weatherman ollieWilliams = new Weatherman(APIKeys.API, RELEASE);
                 ollieWilliams.SetUpdateInterval(TimeSpan.FromMinutes(30));
 
                 // Initialize application settings.

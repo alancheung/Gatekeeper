@@ -1,18 +1,40 @@
 ﻿using GatekeeperCSharp.Key;
+using Newtonsoft.Json;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Timers;
 using WeatherNet.Clients;
 using WeatherNet.Model;
 
 namespace GatekeeperCSharp
 {
+    /// <summary>
+    /// Simple weather update to give to UI to display. All logic should be handled here.
+    /// </summary>
     public class UIWeatherUpdate : EventArgs
     {
+        public UIWeatherUpdate(SingleResult<CurrentWeatherResult> update)
+        {
+            Title = $"{update.Item.Title} - {update.Item.Description}";
+
+            StringBuilder weatherBuilder = new StringBuilder();
+            weatherBuilder.AppendLine($"{update.Item.Title} - {update.Item.Description}");
+            weatherBuilder.AppendLine($"Current: {update.Item.Temp}°F");
+            weatherBuilder.AppendLine($"Forecast: {update.Item.TempMin}°F / {update.Item.TempMax}°F");
+            weatherBuilder.AppendLine($"Humidity: {update.Item.Humidity}%");
+            Description = weatherBuilder.ToString();
+
+            string icon = Path.Combine(Weatherman.ImageFolderPath, update.Item.Icon);
+            icon = Path.ChangeExtension(icon, "png");
+            IconPath = icon;
+        }
+
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Icon { get; set; }
+        public string IconPath { get; set; }
+        public string LastUpdate { get; set; }
     }
 
     public class Weatherman
@@ -42,7 +64,7 @@ namespace GatekeeperCSharp
         /// <summary>
         /// Event fired when the weather has been updated.
         /// </summary>
-        public EventHandler<SingleResult<CurrentWeatherResult>> OnCurrentWeatherUpdate;
+        public EventHandler<UIWeatherUpdate> OnCurrentWeatherUpdate;
 
         /// <summary>
         /// Path the assets folder.
@@ -50,18 +72,31 @@ namespace GatekeeperCSharp
         public static string ImageFolderPath = Path.Combine(Environment.CurrentDirectory, "Assets");
 
         /// <summary>
+        /// Should we get the real weather from the source?
+        /// </summary>
+        public bool UseRealWeather { get; set; }
+
+        /// <summary>
+        /// Did the last update fail?
+        /// </summary>
+        public bool LastUpdateFailed { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="key">API key for OpenWeather</param>
-        public Weatherman(string key)
+        /// <param name="useRealWeather">Use the real weather.</param>
+        public Weatherman(string key, bool useRealWeather = false)
         {
             WeatherNet.ClientSettings.SetApiKey(key);
+            UseRealWeather = useRealWeather;
+            LastUpdateFailed = false;
         }
 
         /// <summary>
         /// Initializes and sets up the timer for regular updates.
         /// </summary>
-        /// <param name="interval"></param>
+        /// <param name="interval">The time interval until the next update.</param>
         public void SetUpdateInterval(TimeSpan interval)
         {
             if (interval.TotalMilliseconds > 0)
@@ -89,27 +124,39 @@ namespace GatekeeperCSharp
         /// <summary>
         /// Update the weather held in memory and broadcast the updates.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Was the update successful</returns>
         public bool UpdateWeather()
         {
-            SingleResult<CurrentWeatherResult> result = CurrentWeather.GetByCoordinates(APIKeys.Latitude, APIKeys.Longitude, "en", "imperial");
+            SingleResult<CurrentWeatherResult> result;
+            if (UseRealWeather)
+            {
+                result = CurrentWeather.GetByCoordinates(APIKeys.Latitude, APIKeys.Longitude, "en", "imperial");
+            }
+            else
+            {
+                string debugWeatherFilePath = Path.Combine(Environment.CurrentDirectory, "fakeWeather.json");
+                string fakeWeatherJson = File.ReadAllText(debugWeatherFilePath);
+                result = JsonConvert.DeserializeObject<SingleResult<CurrentWeatherResult>>(fakeWeatherJson);
+                Console.WriteLine("Faked weather results!");
+            }
+            
             if (result.Success)
             {
                 LastUpdate = DateTimeOffset.Now;
+                LastUpdateFailed = false;
                 _currentWeather = result.Item;
             }
             else
             {
+                LastUpdateFailed = true;
                 Console.WriteLine($"Weather update failed with message: {result.Message}");
             }
 
-            OnCurrentWeatherUpdate?.Invoke(this, result);
-            return result.Success;
-        }
+            UIWeatherUpdate forUi = new UIWeatherUpdate(result);
+            forUi.LastUpdate = $"Last Updated: {LastUpdate.ToString("HH:mm")} - Next: {NextUpdate.ToString("HH:mm")}";
 
-        public Image CreateImage(string icon)
-        {
-            return new Bitmap(Path.Combine(ImageFolderPath, icon));
+            OnCurrentWeatherUpdate?.Invoke(this, forUi);
+            return result.Success;
         }
     }
 }
