@@ -421,16 +421,17 @@
             this.InformationPanel.Controls.Add(this.CurrentWeatherIcon);
             this.InformationPanel.Controls.Add(this.CurrentWeatherLabel);
             this.InformationPanel.Controls.Add(this.CurrentWeatherTitleLabel);
-            this.InformationPanel.Location = new System.Drawing.Point(1, 0);
+            this.InformationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InformationPanel.Location = new System.Drawing.Point(0, 0);
             this.InformationPanel.Name = "InformationPanel";
-            this.InformationPanel.Size = new System.Drawing.Size(396, 480);
+            this.InformationPanel.Size = new System.Drawing.Size(800, 489);
             this.InformationPanel.TabIndex = 2;
             // 
             // LastWeatherUpdateLabel
             // 
             this.LastWeatherUpdateLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.LastWeatherUpdateLabel.AutoSize = true;
-            this.LastWeatherUpdateLabel.Location = new System.Drawing.Point(3, 170);
+            this.LastWeatherUpdateLabel.Location = new System.Drawing.Point(3, 172);
             this.LastWeatherUpdateLabel.Name = "LastWeatherUpdateLabel";
             this.LastWeatherUpdateLabel.Size = new System.Drawing.Size(124, 13);
             this.LastWeatherUpdateLabel.TabIndex = 3;
@@ -449,7 +450,6 @@
             // 
             // CurrentWeatherLabel
             // 
-            this.CurrentWeatherLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.CurrentWeatherLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CurrentWeatherLabel.Location = new System.Drawing.Point(104, 53);
             this.CurrentWeatherLabel.Name = "CurrentWeatherLabel";
@@ -465,7 +465,7 @@
             this.CurrentWeatherTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CurrentWeatherTitleLabel.Location = new System.Drawing.Point(1, 0);
             this.CurrentWeatherTitleLabel.Name = "CurrentWeatherTitleLabel";
-            this.CurrentWeatherTitleLabel.Size = new System.Drawing.Size(395, 50);
+            this.CurrentWeatherTitleLabel.Size = new System.Drawing.Size(392, 50);
             this.CurrentWeatherTitleLabel.TabIndex = 0;
             this.CurrentWeatherTitleLabel.Text = "Current Conditions";
             this.CurrentWeatherTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
