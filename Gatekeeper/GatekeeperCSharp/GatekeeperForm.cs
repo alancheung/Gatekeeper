@@ -58,27 +58,7 @@ namespace GatekeeperCSharp
             get => StatusLabel.Text;
             set
             {
-                StatusLabel.Text = value;
-
-                int textLength = StatusLabel.Text.Length;
-                if (textLength > 36)
-                {
-                    StatusLabel.Font = new Font(StatusLabel.Font.FontFamily, 12);
-                }
-                else if (textLength > 24)
-                {
-                    StatusLabel.Font = new Font(StatusLabel.Font.FontFamily, 18);
-                }
-                else if (StatusLabel.Text.Length > 12)
-                {
-                    StatusLabel.Font = new Font(StatusLabel.Font.FontFamily, 24);
-                }
-                else
-                {
-                    StatusLabel.Font = new Font(StatusLabel.Font.FontFamily, 36);
-                }
-
-                StatusLabel.Update();
+                StatusLabel.SetText(value);
             }
         }
 
@@ -124,9 +104,9 @@ namespace GatekeeperCSharp
         private void _ollieWilliams_OnCurrentWeatherUpdate(object sender, UIWeatherUpdate update)
         {
             CurrentWeatherIcon.ImageLocation = update.IconPath;
-            CurrentWeatherTitleLabel.Text = update.Title;
-            CurrentWeatherLabel.Text = update.Description;
-            LastWeatherUpdateLabel.Text = update.LastUpdate;
+            CurrentWeatherTitleLabel.SetText(update.Title);
+            CurrentWeatherLabel.SetText(update.Description);
+            LastWeatherUpdateLabel.SetText(update.LastUpdate);
         }
 
         /// <summary>
@@ -138,11 +118,11 @@ namespace GatekeeperCSharp
         {
             UIWeatherUpdate tomorrow = updates.First(u => u.TimeStamp.Date == DateTimeOffset.Now.AddDays(1).Date);
             SecondWeatherIcon.ImageLocation = tomorrow.IconPath;
-            SecondWeatherLabel.Text = tomorrow.Description;
+            SecondWeatherLabel.SetText(tomorrow.Description);
 
             UIWeatherUpdate threeDay = updates.First(u => u.TimeStamp.Date == DateTimeOffset.Now.AddDays(2).Date);
             ThirdWeatherIcon.ImageLocation = threeDay.IconPath;
-            ThirdWeatherLabel.Text = threeDay.Description;
+            ThirdWeatherLabel.SetText(threeDay.Description);
         }
 
         /// <summary>
@@ -201,7 +181,7 @@ namespace GatekeeperCSharp
                 Text = "Gatekeeper - DEBUG";
             }
 
-            WeatherSourceButton.Text = $"Use {(_ollieWilliams.UseRealWeather ? "Fake" : "Real")} Weather";
+            WeatherSourceButton.SetText($"Use {(_ollieWilliams.UseRealWeather ? "Fake" : "Real")} Weather");
         }
 
         /// <summary>
@@ -405,7 +385,7 @@ namespace GatekeeperCSharp
         private void Admin_WeatherSourceButton_Click(object sender, EventArgs e)
         {
             _ollieWilliams.UseRealWeather = !_ollieWilliams.UseRealWeather;
-            WeatherSourceButton.Text = $"Use {(_ollieWilliams.UseRealWeather ? "Fake" : "Real")} Weather";
+            WeatherSourceButton.SetText($"Use {(_ollieWilliams.UseRealWeather ? "Fake" : "Real")} Weather");
         }
 
         private void Admin_UpdateWeatherButton_Click(object sender, EventArgs e)
