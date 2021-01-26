@@ -137,12 +137,12 @@ namespace GatekeeperCSharp
         private void _ollieWilliams_OnForecastUpdate(object sender, UIWeatherUpdate[] updates)
         {
             UIWeatherUpdate tomorrow = updates.First(u => u.TimeStamp.Date == DateTimeOffset.Now.AddDays(1).Date);
-            TomorrowWeatherIcon.ImageLocation = tomorrow.IconPath;
-            TomorrowWeatherLabel.Text = tomorrow.Description;
+            SecondWeatherIcon.ImageLocation = tomorrow.IconPath;
+            SecondWeatherLabel.Text = tomorrow.Description;
 
             UIWeatherUpdate threeDay = updates.First(u => u.TimeStamp.Date == DateTimeOffset.Now.AddDays(2).Date);
-            ThreeDayWeatherIcon.ImageLocation = threeDay.IconPath;
-            ThreeDayWeatherLabel.Text = threeDay.Description;
+            ThirdWeatherIcon.ImageLocation = threeDay.IconPath;
+            ThirdWeatherLabel.Text = threeDay.Description;
         }
 
         /// <summary>

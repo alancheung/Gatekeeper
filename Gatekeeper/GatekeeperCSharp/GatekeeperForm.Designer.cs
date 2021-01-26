@@ -45,6 +45,15 @@
             this.SevenButton = new System.Windows.Forms.Button();
             this.EightButton = new System.Windows.Forms.Button();
             this.NineButton = new System.Windows.Forms.Button();
+            this.InformationPanel = new System.Windows.Forms.Panel();
+            this.ThirdWeatherLabel = new System.Windows.Forms.Label();
+            this.ThirdWeatherIcon = new System.Windows.Forms.PictureBox();
+            this.SecondWeatherLabel = new System.Windows.Forms.Label();
+            this.SecondWeatherIcon = new System.Windows.Forms.PictureBox();
+            this.LastWeatherUpdateLabel = new System.Windows.Forms.Label();
+            this.CurrentWeatherIcon = new System.Windows.Forms.PictureBox();
+            this.CurrentWeatherLabel = new System.Windows.Forms.Label();
+            this.CurrentWeatherTitleLabel = new System.Windows.Forms.Label();
             this.AdminTablePanel = new System.Windows.Forms.TableLayoutPanel();
             this.Admin_ExitButton = new System.Windows.Forms.Button();
             this.Admin_DebugButton = new System.Windows.Forms.Button();
@@ -56,22 +65,13 @@
             this.ToggleLockButton = new System.Windows.Forms.Button();
             this.WeatherSourceButton = new System.Windows.Forms.Button();
             this.UpdateWeatherButton = new System.Windows.Forms.Button();
-            this.InformationPanel = new System.Windows.Forms.Panel();
-            this.LastWeatherUpdateLabel = new System.Windows.Forms.Label();
-            this.CurrentWeatherIcon = new System.Windows.Forms.PictureBox();
-            this.CurrentWeatherLabel = new System.Windows.Forms.Label();
-            this.CurrentWeatherTitleLabel = new System.Windows.Forms.Label();
-            this.TomorrowWeatherIcon = new System.Windows.Forms.PictureBox();
-            this.TomorrowWeatherLabel = new System.Windows.Forms.Label();
-            this.ThreeDayWeatherIcon = new System.Windows.Forms.PictureBox();
-            this.ThreeDayWeatherLabel = new System.Windows.Forms.Label();
             this.MainPanel.SuspendLayout();
             this.RightTablePanel.SuspendLayout();
-            this.AdminTablePanel.SuspendLayout();
             this.InformationPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ThirdWeatherIcon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondWeatherIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentWeatherIcon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TomorrowWeatherIcon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ThreeDayWeatherIcon)).BeginInit();
+            this.AdminTablePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainPanel
@@ -290,6 +290,107 @@
             this.NineButton.UseVisualStyleBackColor = false;
             this.NineButton.Click += new System.EventHandler(this.NumberButton_Click);
             // 
+            // InformationPanel
+            // 
+            this.InformationPanel.Controls.Add(this.CurrentWeatherTitleLabel);
+            this.InformationPanel.Controls.Add(this.CurrentWeatherIcon);
+            this.InformationPanel.Controls.Add(this.CurrentWeatherLabel);
+            this.InformationPanel.Controls.Add(this.SecondWeatherIcon);
+            this.InformationPanel.Controls.Add(this.SecondWeatherLabel);
+            this.InformationPanel.Controls.Add(this.ThirdWeatherIcon);
+            this.InformationPanel.Controls.Add(this.ThirdWeatherLabel);
+            this.InformationPanel.Controls.Add(this.LastWeatherUpdateLabel);
+            this.InformationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InformationPanel.Location = new System.Drawing.Point(0, 0);
+            this.InformationPanel.Name = "InformationPanel";
+            this.InformationPanel.Size = new System.Drawing.Size(800, 489);
+            this.InformationPanel.TabIndex = 2;
+            // 
+            // ThirdWeatherLabel
+            // 
+            this.ThirdWeatherLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ThirdWeatherLabel.Location = new System.Drawing.Point(104, 297);
+            this.ThirdWeatherLabel.Name = "ThirdWeatherLabel";
+            this.ThirdWeatherLabel.Size = new System.Drawing.Size(289, 117);
+            this.ThirdWeatherLabel.TabIndex = 7;
+            this.ThirdWeatherLabel.Text = "Unknown";
+            this.ThirdWeatherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // ThirdWeatherIcon
+            // 
+            this.ThirdWeatherIcon.Image = global::GatekeeperCSharp.Properties.Resources.favicon;
+            this.ThirdWeatherIcon.InitialImage = global::GatekeeperCSharp.Properties.Resources.favicon;
+            this.ThirdWeatherIcon.Location = new System.Drawing.Point(5, 297);
+            this.ThirdWeatherIcon.Name = "ThirdWeatherIcon";
+            this.ThirdWeatherIcon.Size = new System.Drawing.Size(94, 116);
+            this.ThirdWeatherIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.ThirdWeatherIcon.TabIndex = 6;
+            this.ThirdWeatherIcon.TabStop = false;
+            // 
+            // SecondWeatherLabel
+            // 
+            this.SecondWeatherLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SecondWeatherLabel.Location = new System.Drawing.Point(104, 175);
+            this.SecondWeatherLabel.Name = "SecondWeatherLabel";
+            this.SecondWeatherLabel.Size = new System.Drawing.Size(289, 117);
+            this.SecondWeatherLabel.TabIndex = 5;
+            this.SecondWeatherLabel.Text = "Unknown";
+            this.SecondWeatherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // SecondWeatherIcon
+            // 
+            this.SecondWeatherIcon.Image = global::GatekeeperCSharp.Properties.Resources.favicon;
+            this.SecondWeatherIcon.InitialImage = global::GatekeeperCSharp.Properties.Resources.favicon;
+            this.SecondWeatherIcon.Location = new System.Drawing.Point(5, 175);
+            this.SecondWeatherIcon.Name = "SecondWeatherIcon";
+            this.SecondWeatherIcon.Size = new System.Drawing.Size(94, 116);
+            this.SecondWeatherIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.SecondWeatherIcon.TabIndex = 4;
+            this.SecondWeatherIcon.TabStop = false;
+            // 
+            // LastWeatherUpdateLabel
+            // 
+            this.LastWeatherUpdateLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.LastWeatherUpdateLabel.AutoSize = true;
+            this.LastWeatherUpdateLabel.Location = new System.Drawing.Point(1, 476);
+            this.LastWeatherUpdateLabel.Name = "LastWeatherUpdateLabel";
+            this.LastWeatherUpdateLabel.Size = new System.Drawing.Size(124, 13);
+            this.LastWeatherUpdateLabel.TabIndex = 3;
+            this.LastWeatherUpdateLabel.Text = "Last Updated: undefined";
+            // 
+            // CurrentWeatherIcon
+            // 
+            this.CurrentWeatherIcon.Image = global::GatekeeperCSharp.Properties.Resources.favicon;
+            this.CurrentWeatherIcon.InitialImage = global::GatekeeperCSharp.Properties.Resources.favicon;
+            this.CurrentWeatherIcon.Location = new System.Drawing.Point(4, 53);
+            this.CurrentWeatherIcon.Name = "CurrentWeatherIcon";
+            this.CurrentWeatherIcon.Size = new System.Drawing.Size(94, 116);
+            this.CurrentWeatherIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.CurrentWeatherIcon.TabIndex = 1;
+            this.CurrentWeatherIcon.TabStop = false;
+            // 
+            // CurrentWeatherLabel
+            // 
+            this.CurrentWeatherLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurrentWeatherLabel.Location = new System.Drawing.Point(104, 53);
+            this.CurrentWeatherLabel.Name = "CurrentWeatherLabel";
+            this.CurrentWeatherLabel.Size = new System.Drawing.Size(289, 117);
+            this.CurrentWeatherLabel.TabIndex = 2;
+            this.CurrentWeatherLabel.Text = "Unknown";
+            this.CurrentWeatherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // CurrentWeatherTitleLabel
+            // 
+            this.CurrentWeatherTitleLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CurrentWeatherTitleLabel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.CurrentWeatherTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurrentWeatherTitleLabel.Location = new System.Drawing.Point(1, 0);
+            this.CurrentWeatherTitleLabel.Name = "CurrentWeatherTitleLabel";
+            this.CurrentWeatherTitleLabel.Size = new System.Drawing.Size(392, 50);
+            this.CurrentWeatherTitleLabel.TabIndex = 0;
+            this.CurrentWeatherTitleLabel.Text = "Current Conditions";
+            this.CurrentWeatherTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // AdminTablePanel
             // 
             this.AdminTablePanel.ColumnCount = 4;
@@ -421,107 +522,6 @@
             this.UpdateWeatherButton.UseVisualStyleBackColor = true;
             this.UpdateWeatherButton.Click += new System.EventHandler(this.Admin_UpdateWeatherButton_Click);
             // 
-            // InformationPanel
-            // 
-            this.InformationPanel.Controls.Add(this.ThreeDayWeatherLabel);
-            this.InformationPanel.Controls.Add(this.ThreeDayWeatherIcon);
-            this.InformationPanel.Controls.Add(this.TomorrowWeatherLabel);
-            this.InformationPanel.Controls.Add(this.TomorrowWeatherIcon);
-            this.InformationPanel.Controls.Add(this.LastWeatherUpdateLabel);
-            this.InformationPanel.Controls.Add(this.CurrentWeatherIcon);
-            this.InformationPanel.Controls.Add(this.CurrentWeatherLabel);
-            this.InformationPanel.Controls.Add(this.CurrentWeatherTitleLabel);
-            this.InformationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InformationPanel.Location = new System.Drawing.Point(0, 0);
-            this.InformationPanel.Name = "InformationPanel";
-            this.InformationPanel.Size = new System.Drawing.Size(800, 489);
-            this.InformationPanel.TabIndex = 2;
-            // 
-            // LastWeatherUpdateLabel
-            // 
-            this.LastWeatherUpdateLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.LastWeatherUpdateLabel.AutoSize = true;
-            this.LastWeatherUpdateLabel.Location = new System.Drawing.Point(1, 476);
-            this.LastWeatherUpdateLabel.Name = "LastWeatherUpdateLabel";
-            this.LastWeatherUpdateLabel.Size = new System.Drawing.Size(124, 13);
-            this.LastWeatherUpdateLabel.TabIndex = 3;
-            this.LastWeatherUpdateLabel.Text = "Last Updated: undefined";
-            // 
-            // CurrentWeatherIcon
-            // 
-            this.CurrentWeatherIcon.Image = global::GatekeeperCSharp.Properties.Resources.favicon;
-            this.CurrentWeatherIcon.InitialImage = global::GatekeeperCSharp.Properties.Resources.favicon;
-            this.CurrentWeatherIcon.Location = new System.Drawing.Point(4, 53);
-            this.CurrentWeatherIcon.Name = "CurrentWeatherIcon";
-            this.CurrentWeatherIcon.Size = new System.Drawing.Size(94, 116);
-            this.CurrentWeatherIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.CurrentWeatherIcon.TabIndex = 1;
-            this.CurrentWeatherIcon.TabStop = false;
-            // 
-            // CurrentWeatherLabel
-            // 
-            this.CurrentWeatherLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CurrentWeatherLabel.Location = new System.Drawing.Point(104, 53);
-            this.CurrentWeatherLabel.Name = "CurrentWeatherLabel";
-            this.CurrentWeatherLabel.Size = new System.Drawing.Size(289, 117);
-            this.CurrentWeatherLabel.TabIndex = 2;
-            this.CurrentWeatherLabel.Text = "Unknown";
-            this.CurrentWeatherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // CurrentWeatherTitleLabel
-            // 
-            this.CurrentWeatherTitleLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CurrentWeatherTitleLabel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CurrentWeatherTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CurrentWeatherTitleLabel.Location = new System.Drawing.Point(1, 0);
-            this.CurrentWeatherTitleLabel.Name = "CurrentWeatherTitleLabel";
-            this.CurrentWeatherTitleLabel.Size = new System.Drawing.Size(392, 50);
-            this.CurrentWeatherTitleLabel.TabIndex = 0;
-            this.CurrentWeatherTitleLabel.Text = "Current Conditions";
-            this.CurrentWeatherTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TomorrowWeatherIcon
-            // 
-            this.TomorrowWeatherIcon.Image = global::GatekeeperCSharp.Properties.Resources.favicon;
-            this.TomorrowWeatherIcon.InitialImage = global::GatekeeperCSharp.Properties.Resources.favicon;
-            this.TomorrowWeatherIcon.Location = new System.Drawing.Point(5, 175);
-            this.TomorrowWeatherIcon.Name = "TomorrowWeatherIcon";
-            this.TomorrowWeatherIcon.Size = new System.Drawing.Size(94, 116);
-            this.TomorrowWeatherIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.TomorrowWeatherIcon.TabIndex = 4;
-            this.TomorrowWeatherIcon.TabStop = false;
-            // 
-            // TomorrowWeatherLabel
-            // 
-            this.TomorrowWeatherLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TomorrowWeatherLabel.Location = new System.Drawing.Point(104, 175);
-            this.TomorrowWeatherLabel.Name = "TomorrowWeatherLabel";
-            this.TomorrowWeatherLabel.Size = new System.Drawing.Size(289, 117);
-            this.TomorrowWeatherLabel.TabIndex = 5;
-            this.TomorrowWeatherLabel.Text = "Unknown";
-            this.TomorrowWeatherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // ThreeDayWeatherIcon
-            // 
-            this.ThreeDayWeatherIcon.Image = global::GatekeeperCSharp.Properties.Resources.favicon;
-            this.ThreeDayWeatherIcon.InitialImage = global::GatekeeperCSharp.Properties.Resources.favicon;
-            this.ThreeDayWeatherIcon.Location = new System.Drawing.Point(5, 297);
-            this.ThreeDayWeatherIcon.Name = "ThreeDayWeatherIcon";
-            this.ThreeDayWeatherIcon.Size = new System.Drawing.Size(94, 116);
-            this.ThreeDayWeatherIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.ThreeDayWeatherIcon.TabIndex = 6;
-            this.ThreeDayWeatherIcon.TabStop = false;
-            // 
-            // ThreeDayWeatherLabel
-            // 
-            this.ThreeDayWeatherLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ThreeDayWeatherLabel.Location = new System.Drawing.Point(104, 297);
-            this.ThreeDayWeatherLabel.Name = "ThreeDayWeatherLabel";
-            this.ThreeDayWeatherLabel.Size = new System.Drawing.Size(289, 117);
-            this.ThreeDayWeatherLabel.TabIndex = 7;
-            this.ThreeDayWeatherLabel.Text = "Unknown";
-            this.ThreeDayWeatherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // GatekeeperForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -538,12 +538,12 @@
             this.Text = "Gatekeeper - DEBUG";
             this.MainPanel.ResumeLayout(false);
             this.RightTablePanel.ResumeLayout(false);
-            this.AdminTablePanel.ResumeLayout(false);
             this.InformationPanel.ResumeLayout(false);
             this.InformationPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ThirdWeatherIcon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondWeatherIcon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentWeatherIcon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TomorrowWeatherIcon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ThreeDayWeatherIcon)).EndInit();
+            this.AdminTablePanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -580,10 +580,10 @@
         private System.Windows.Forms.Panel InformationPanel;
         private System.Windows.Forms.Button WeatherSourceButton;
         private System.Windows.Forms.Button UpdateWeatherButton;
-        private System.Windows.Forms.Label ThreeDayWeatherLabel;
-        private System.Windows.Forms.PictureBox ThreeDayWeatherIcon;
-        private System.Windows.Forms.Label TomorrowWeatherLabel;
-        private System.Windows.Forms.PictureBox TomorrowWeatherIcon;
+        private System.Windows.Forms.Label ThirdWeatherLabel;
+        private System.Windows.Forms.PictureBox ThirdWeatherIcon;
+        private System.Windows.Forms.Label SecondWeatherLabel;
+        private System.Windows.Forms.PictureBox SecondWeatherIcon;
     }
 }
 
