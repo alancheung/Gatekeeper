@@ -268,7 +268,7 @@ namespace GatekeeperCSharp
                     .ThenBy(f => f.Date)
                     .First(f => weatherRanking[f.Title] >= 2 || f.Date.Hour >= 9);
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
                 string firstUnknown = group.FirstOrDefault(g => !weatherRanking.ContainsKey(g.Title)).Title;
                 Console.WriteLine($"Unknown weather title {firstUnknown}!");
