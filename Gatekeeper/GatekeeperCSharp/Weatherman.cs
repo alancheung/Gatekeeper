@@ -16,7 +16,7 @@ namespace GatekeeperCSharp
     /// </summary>
     public class UIWeatherUpdate : EventArgs
     {
-        public UIWeatherUpdate(WeatherResult update)
+        public UIWeatherUpdate(WeatherResult update, bool successful)
         {
             Result = update;
             TimeStamp = update.Date;
@@ -33,15 +33,28 @@ namespace GatekeeperCSharp
             icon = Path.ChangeExtension(icon, "png");
             IconPath = icon;
 
+            NewData = successful;
+            DateTimeOffset now = DateTimeOffset.Now;
+            string updateType = string.Empty;
+            if (!NewData)
+            {
+                updateType = " (FAILED)";
+            }
+            else
+            {
+                updateType = $" (from {TimeStamp.ToString("M/d/yy@HH:mm")})";
+            }
+
+            LastUpdateMessage = $"Last Update{updateType}: {now.ToString("HH:mm")}";
         }
 
         public string Title { get; set; }
         public string Description { get; set; }
         public string IconPath { get; set; }
-        public string LastUpdate { get; set; }
+        public string LastUpdateMessage { get; set; }
         public DateTimeOffset TimeStamp { get; set; }
-
         public WeatherResult Result { get; set; }
+        public bool NewData { get; set; }
     }
 
     public class Weatherman
@@ -50,13 +63,6 @@ namespace GatekeeperCSharp
         /// Timestamp of last weather update.
         /// </summary>
         public DateTimeOffset LastUpdate;
-
-        /// <summary>
-        /// Calculated time of the next update. This is not exact due to timer limitations.
-        /// </summary>
-        public DateTimeOffset NextUpdate => LastUpdate != default && _currentWeatherTimer != null
-            ? LastUpdate.Add(TimeSpan.FromMilliseconds(_currentWeatherTimer.Interval))
-            : DateTimeOffset.MinValue;
 
         /// <summary>
         /// Internal timer to schedule regular UI updates for the current weather
@@ -82,7 +88,7 @@ namespace GatekeeperCSharp
         /// <summary>
         /// Event fired when the weather has been updated.
         /// </summary>
-        public EventHandler<UIWeatherUpdate> OnCurrentWeatherUpdate;
+        public EventHandler<UIWeatherUpdate> OnWeatherUpdate;
 
         /// <summary>
         /// Event fired when the forecasted weather has been updated.
@@ -198,13 +204,16 @@ namespace GatekeeperCSharp
                 Console.WriteLine($"Weather update failed with message: {result.Message}");
             }
 
-            UIWeatherUpdate forUi = new UIWeatherUpdate(result.Item);
-            forUi.LastUpdate = $"Last Updated: {LastUpdate.ToString("HH:mm")} - Next: {NextUpdate.ToString("HH:mm")}";
+            UIWeatherUpdate forUi = new UIWeatherUpdate(result.Item, !LastUpdateFailed);
 
-            OnCurrentWeatherUpdate?.Invoke(this, forUi);
+            OnWeatherUpdate?.Invoke(this, forUi);
             return result.Success;
         }
 
+        /// <summary>
+        /// Update the forecasted weather held in memory and broadcast the updates.
+        /// </summary>
+        /// <returns>Was the update successful</returns>
         public bool UpdateForecast()
         {
             Result<FiveDaysForecastResult> result;
@@ -241,7 +250,7 @@ namespace GatekeeperCSharp
                 .ToDictionary(grp => grp.Key, grp => HighestRankingWeatherUpdate(grp));
 
             UIWeatherUpdate[] forUi = highestRank.Values
-                .Select(f => new UIWeatherUpdate(f))
+                .Select(f => new UIWeatherUpdate(f, !LastUpdateFailed))
                 .ToArray();
             OnForecastUpdate?.Invoke(this, forUi);
 

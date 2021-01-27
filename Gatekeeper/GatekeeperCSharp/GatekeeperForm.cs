@@ -84,7 +84,7 @@ namespace GatekeeperCSharp
             _relayPin = relayPin;
             _openTime = openTime;
 
-            _ollieWilliams.OnCurrentWeatherUpdate += _ollieWilliams_OnCurrentWeatherUpdate;
+            _ollieWilliams.OnWeatherUpdate += _ollieWilliams_OnWeatherUpdate;
             _ollieWilliams.OnForecastUpdate += _ollieWilliams_OnForecastUpdate;
             _gpio.OnRfidCardDetected += gpio_OnRfidCardDetected;
 
@@ -101,12 +101,12 @@ namespace GatekeeperCSharp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="update"></param>
-        private void _ollieWilliams_OnCurrentWeatherUpdate(object sender, UIWeatherUpdate update)
+        private void _ollieWilliams_OnWeatherUpdate(object sender, UIWeatherUpdate update)
         {
             CurrentWeatherIcon.ImageLocation = update.IconPath;
             CurrentWeatherTitleLabel.SetText(update.Title);
             CurrentWeatherLabel.SetText(update.Description);
-            LastWeatherUpdateLabel.SetText(update.LastUpdate);
+            LastWeatherUpdateLabel.SetText(update.LastUpdateMessage);
         }
 
         /// <summary>
