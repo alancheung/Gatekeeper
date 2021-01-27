@@ -261,34 +261,24 @@ namespace GatekeeperCSharp
                 { "Atmosphere",  6 },
             };
 
-            FiveDaysForecastResult highestResult = group.First();
-            foreach(FiveDaysForecastResult forecast in group)
+            try
             {
-                // If the result is already the highest rank stop searching.
-                if (weatherRanking[highestResult.Title] == 6)
-                {
-                    break;
-                }
-
-                if (weatherRanking.ContainsKey(forecast.Title))
-                {
-                    // "Update highest result if:
-                    //      the titles are different and the rank of the current forecast is higher than the highest result
-                    //      or the highest result is not serious and is before 9AM and the latest forecast is after 9"
-                    if ((forecast.Title != highestResult.Title && weatherRanking[forecast.Title] > weatherRanking[highestResult.Title])
-                        || (weatherRanking[highestResult.Title] < 3 && highestResult.Date.Hour < 9 && forecast.Date.Hour >= 9))
-                    {
-                        highestResult = forecast;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"Unknown weather title {forecast.Title}!");
-                    highestResult = forecast;
-                }
+                // "Take the first weather result that is not clear or cloudy or after nine in a list ordered by the severity and time."
+                return group.OrderByDescending(f => weatherRanking[f.Title])
+                    .ThenBy(f => f.Date)
+                    .First(f => weatherRanking[f.Title] >= 2 || f.Date.Hour >= 9);
+            }
+            catch (KeyNotFoundException e)
+            {
+                string firstUnknown = group.FirstOrDefault(g => !weatherRanking.ContainsKey(g.Title)).Title;
+                Console.WriteLine($"Unknown weather title {firstUnknown}!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception occurred ranking forecasts. {e.Message}");
             }
 
-            return highestResult;
+            return group.FirstOrDefault(g => g.Date.Hour > 9);
         }
     }
 }
