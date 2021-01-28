@@ -18,6 +18,8 @@ namespace GatekeeperCSharp
     {
         public UIWeatherUpdate(WeatherResult update, bool successful)
         {
+            bool isCurrent = update is CurrentWeatherResult;
+
             Result = update;
             TimeStamp = update.Date;
             Title = $"{update.Title} - {update.Description}";
@@ -25,7 +27,16 @@ namespace GatekeeperCSharp
             StringBuilder weatherBuilder = new StringBuilder();
             weatherBuilder.AppendLine($"{update.Title} - {update.Description}");
             weatherBuilder.AppendLine($"Time: {TimeStamp.ToString("M/d/yy @ HH:mm")}");
-            weatherBuilder.AppendLine($"Current: {update.Temp}°F");
+            if (isCurrent)
+            {
+                weatherBuilder.AppendLine($"Current: {update.Temp}°F");
+            }
+            else
+            {
+
+                weatherBuilder.AppendLine($"Min/Max: {Math.Round(update.TempMin)}°F / {Math.Round(update.TempMax)}°F");
+            }
+            weatherBuilder.AppendLine($"Wind: {update.WindSpeed}");
             weatherBuilder.AppendLine($"Humidity: {update.Humidity}%");
             Description = weatherBuilder.ToString();
 
@@ -273,9 +284,13 @@ namespace GatekeeperCSharp
             try
             {
                 // "Take the first weather result that is not clear or cloudy or after nine in a list ordered by the severity and time."
-                return group.OrderByDescending(f => weatherRanking[f.Title])
+                FiveDaysForecastResult highestResult = group.OrderByDescending(f => weatherRanking[f.Title])
                     .ThenBy(f => f.Date)
                     .First(f => weatherRanking[f.Title] >= 2 || f.Date.Hour >= 9);
+
+                // Hacky but set the min/max as the value returned.
+                highestResult.TempMax = group.Max(f => f.TempMax);
+                highestResult.TempMin = group.Min(f => f.TempMin);
             }
             catch (KeyNotFoundException)
             {
