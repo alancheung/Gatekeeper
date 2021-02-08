@@ -172,6 +172,10 @@ namespace GatekeeperCSharp
             AdminTablePanel.Location = new Point(0, 0);
             AdminTablePanel.Size = new Size(ScreenSize.Width / 2, ScreenSize.Height);
 
+            InformationPanel.Location = new Point(0, 0);
+            InformationPanel.Size = new Size(ScreenSize.Width / 2, ScreenSize.Height);
+            CurrentWeatherTitleLabel.Size = new Size((ScreenSize.Width / 2) - 1, 50);
+
             if (RELEASE)
             {
                 Text = "Gatekeeper";
@@ -192,7 +196,7 @@ namespace GatekeeperCSharp
             _gpio.Toggle(_relayPin, GpioPinValue.High, _openTime);
         }
 
-        #region Form Listeners
+        #region Keypad Form Listeners
         private void NumberButton_Click(object sender, EventArgs e)
         {
             Input += ((Button)sender).Text;
@@ -394,5 +398,30 @@ namespace GatekeeperCSharp
             _ollieWilliams.UpdateForecast();
         }
         #endregion
+
+        #region Weather Button Listeners
+        private void CurrentWeatherTitleLabel_Click(object sender, EventArgs e)
+        {
+            _ollieWilliams.UpdateWeather(false);
+            _ollieWilliams.UpdateForecast(false);
+        }
+
+        private void CurrentWeather_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SecondWeather_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ThirdWeather_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+        
     }
 }

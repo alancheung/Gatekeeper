@@ -316,7 +316,8 @@
             this.CurrentWeatherTitleLabel.Size = new System.Drawing.Size(392, 50);
             this.CurrentWeatherTitleLabel.TabIndex = 0;
             this.CurrentWeatherTitleLabel.Text = "Current Conditions";
-            this.CurrentWeatherTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CurrentWeatherTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.CurrentWeatherTitleLabel.Click += new System.EventHandler(this.CurrentWeatherTitleLabel_Click);
             // 
             // CurrentWeatherIcon
             // 
@@ -328,6 +329,7 @@
             this.CurrentWeatherIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.CurrentWeatherIcon.TabIndex = 1;
             this.CurrentWeatherIcon.TabStop = false;
+            this.CurrentWeatherIcon.Click += new System.EventHandler(this.CurrentWeather_Click);
             // 
             // CurrentWeatherLabel
             // 
@@ -338,6 +340,7 @@
             this.CurrentWeatherLabel.TabIndex = 2;
             this.CurrentWeatherLabel.Text = "Unknown";
             this.CurrentWeatherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CurrentWeatherLabel.Click += new System.EventHandler(this.CurrentWeather_Click);
             // 
             // SecondWeatherIcon
             // 
@@ -349,6 +352,7 @@
             this.SecondWeatherIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.SecondWeatherIcon.TabIndex = 4;
             this.SecondWeatherIcon.TabStop = false;
+            this.SecondWeatherIcon.Click += new System.EventHandler(this.SecondWeather_Click);
             // 
             // SecondWeatherLabel
             // 
@@ -359,6 +363,7 @@
             this.SecondWeatherLabel.TabIndex = 5;
             this.SecondWeatherLabel.Text = "Unknown";
             this.SecondWeatherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.SecondWeatherLabel.Click += new System.EventHandler(this.SecondWeather_Click);
             // 
             // ThirdWeatherIcon
             // 
@@ -370,6 +375,7 @@
             this.ThirdWeatherIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.ThirdWeatherIcon.TabIndex = 6;
             this.ThirdWeatherIcon.TabStop = false;
+            this.ThirdWeatherIcon.Click += new System.EventHandler(this.ThirdWeather_Click);
             // 
             // ThirdWeatherLabel
             // 
@@ -380,6 +386,7 @@
             this.ThirdWeatherLabel.TabIndex = 7;
             this.ThirdWeatherLabel.Text = "Unknown";
             this.ThirdWeatherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ThirdWeatherLabel.Click += new System.EventHandler(this.ThirdWeather_Click);
             // 
             // LastWeatherUpdateLabel
             // 
