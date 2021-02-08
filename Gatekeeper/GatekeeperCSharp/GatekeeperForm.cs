@@ -402,8 +402,7 @@ namespace GatekeeperCSharp
         #region Weather Button Listeners
         private void CurrentWeatherTitleLabel_Click(object sender, EventArgs e)
         {
-            _ollieWilliams.UpdateWeather(false);
-            _ollieWilliams.UpdateForecast(false);
+
         }
 
         private void CurrentWeather_Click(object sender, EventArgs e)
