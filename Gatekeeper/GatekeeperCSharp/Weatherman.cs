@@ -291,6 +291,8 @@ namespace GatekeeperCSharp
                 // Hacky but set the min/max as the value returned.
                 highestResult.TempMax = group.Max(f => f.TempMax);
                 highestResult.TempMin = group.Min(f => f.TempMin);
+
+                return highestResult;
             }
             catch (KeyNotFoundException)
             {
