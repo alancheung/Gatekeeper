@@ -248,7 +248,10 @@ namespace GatekeeperCSharp
             if (_authManager.Authenticate(Input, out string id))
             {
                 Status = $"Welcome {id}!";
-                await ToggleLock();
+                Task lockTask = ToggleLock();
+                Task wakeTask = WOL.Send(SecretKeys.DesktopMAC);
+
+                await Task.WhenAll(lockTask, wakeTask);
                 ClearButton_Click(null, null);
             }
             else
