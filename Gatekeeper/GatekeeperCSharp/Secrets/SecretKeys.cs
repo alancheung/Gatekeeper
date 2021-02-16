@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GatekeeperCSharp.Key
+﻿namespace GatekeeperCSharp.Secrets
 {
-    public partial class SecretKeys
+    public partial class Keys
     {
         /// <summary>
         /// OpenWeather API key
@@ -22,5 +16,10 @@ namespace GatekeeperCSharp.Key
         /// Longitude of the house
         /// </summary>
         public static readonly double Longitude = 0d;
+
+        /// <summary>
+        /// The MAC address of the office desktop.
+        /// </summary>
+        public static readonly string DesktopMAC = "";
     }
 }
