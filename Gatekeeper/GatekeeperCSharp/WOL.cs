@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,42 +12,27 @@ using System.Threading.Tasks;
 namespace GatekeeperCSharp
 {
     /// <summary>
-    /// Credit to https://stackoverflow.com/a/58043033/11947191.
+    /// Credit to https://stackoverflow.com/a/65529803/11947191
     /// </summary>
     public static class WOL
     {
+        /// <summary>
+        /// Broadcast address
+        /// </summary>
+        private static readonly IPEndPoint BroadcastEndpoint = new IPEndPoint(IPAddress.Broadcast, 9);
 
-        public static async Task WakeOnLan(string macAddress)
+        /// <summary>
+        /// Send a Wake On Lan (WOL) request to the specific MAC address represented by <paramref name="macAddress"/>
+        /// </summary>
+        /// <param name="macAddress">The target machine to wakeup.</param>
+        /// <returns>A <see cref="UdpClient.SendAsync(byte[], int, IPEndPoint)"/> result.</returns>
+        public static async Task Send(string macAddress)
         {
             byte[] magicPacket = BuildMagicPacket(macAddress);
-            foreach (NetworkInterface networkInterface in NetworkInterface.GetAllNetworkInterfaces().Where((n) =>
-                n.NetworkInterfaceType != NetworkInterfaceType.Loopback && n.OperationalStatus == OperationalStatus.Up))
+
+            using (UdpClient client = new UdpClient())
             {
-                IPInterfaceProperties iPInterfaceProperties = networkInterface.GetIPProperties();
-                foreach (MulticastIPAddressInformation multicastIPAddressInformation in iPInterfaceProperties.MulticastAddresses)
-                {
-                    IPAddress multicastIpAddress = multicastIPAddressInformation.Address;
-                    if (multicastIpAddress.ToString().StartsWith("ff02::1%", StringComparison.OrdinalIgnoreCase)) // Ipv6: All hosts on LAN (with zone index)
-                    {
-                        UnicastIPAddressInformation unicastIPAddressInformation = iPInterfaceProperties.UnicastAddresses.Where((u) =>
-                            u.Address.AddressFamily == AddressFamily.InterNetworkV6 && !u.Address.IsIPv6LinkLocal).FirstOrDefault();
-                        if (unicastIPAddressInformation != null)
-                        {
-                            await SendWakeOnLan(unicastIPAddressInformation.Address, multicastIpAddress, magicPacket);
-                            break;
-                        }
-                    }
-                    else if (multicastIpAddress.ToString().Equals("224.0.0.1")) // Ipv4: All hosts on LAN
-                    {
-                        UnicastIPAddressInformation unicastIPAddressInformation = iPInterfaceProperties.UnicastAddresses.Where((u) =>
-                            u.Address.AddressFamily == AddressFamily.InterNetwork && !iPInterfaceProperties.GetIPv4Properties().IsAutomaticPrivateAddressingActive).FirstOrDefault();
-                        if (unicastIPAddressInformation != null)
-                        {
-                            await SendWakeOnLan(unicastIPAddressInformation.Address, multicastIpAddress, magicPacket);
-                            break;
-                        }
-                    }
-                }
+                await client.SendAsync(magicPacket, magicPacket.Length, BroadcastEndpoint);
             }
         }
 
@@ -72,14 +59,6 @@ namespace GatekeeperCSharp
                     }
                 }
                 return ms.ToArray(); // 102 bytes magic packet
-            }
-        }
-
-        private static async Task SendWakeOnLan(IPAddress localIpAddress, IPAddress multicastIpAddress, byte[] magicPacket)
-        {
-            using (UdpClient client = new UdpClient(new IPEndPoint(localIpAddress, 0)))
-            {
-                await client.SendAsync(magicPacket, magicPacket.Length, multicastIpAddress.ToString(), 9);
             }
         }
     }
