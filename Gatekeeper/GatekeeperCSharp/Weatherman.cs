@@ -192,7 +192,7 @@ namespace GatekeeperCSharp
             SingleResult<CurrentWeatherResult> result;
             if (UseRealWeather)
             {
-                result = CurrentWeather.GetByCoordinates(APIKeys.Latitude, APIKeys.Longitude, "en", "imperial");
+                result = CurrentWeather.GetByCoordinates(SecretKeys.Latitude, SecretKeys.Longitude, "en", "imperial");
             }
             else
             {
@@ -230,7 +230,7 @@ namespace GatekeeperCSharp
             Result<FiveDaysForecastResult> result;
             if (UseRealWeather)
             {
-                result = FiveDaysForecast.GetByCoordinates(APIKeys.Latitude, APIKeys.Longitude, "en", "imperial");
+                result = FiveDaysForecast.GetByCoordinates(SecretKeys.Latitude, SecretKeys.Longitude, "en", "imperial");
 
                 File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "fakeForecast.json"), JsonConvert.SerializeObject(result));
             }

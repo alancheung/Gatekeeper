@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GatekeeperCSharp.Key
 {
-    public partial class APIKeys
+    public partial class SecretKeys
     {
         /// <summary>
         /// OpenWeather API key
