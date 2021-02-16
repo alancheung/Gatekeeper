@@ -115,8 +115,8 @@
     <Compile Include="GPIO\GpioManager.cs" />
     <Compile Include="GPIO\GpioManagerSimulator.cs" />
     <Compile Include="GPIO\IGpioManager.cs" />
-    <Compile Include="Key\APIKeys.cs" />
-    <Compile Include="Key\APIKeysLocal.cs" />
+    <Compile Include="Keys\APIKeys.cs" />
+    <Compile Include="Keys\APIKeysLocal.cs" />
     <Compile Include="Weatherman.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
