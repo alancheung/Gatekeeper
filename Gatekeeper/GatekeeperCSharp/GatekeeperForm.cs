@@ -131,13 +131,13 @@ namespace GatekeeperCSharp
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Arguments included in RFID detection</param>
-        private void gpio_OnRfidCardDetected(object sender, RfidDetectedEventArgs e)
+        private async void gpio_OnRfidCardDetected(object sender, RfidDetectedEventArgs e)
         {
             string cardData = e.Data.Stringify(d => d, string.Empty);
             if (_authManager.Authenticate(cardData, out string id))
             {
                 Status = $"Welcome {id}!";
-                ToggleLock();
+                await ToggleLock();
                 Clear();
             }
             else
@@ -192,9 +192,9 @@ namespace GatekeeperCSharp
         /// <summary>
         /// Toggle the magnetic lock relay open.
         /// </summary>
-        private void ToggleLock()
+        private async Task ToggleLock()
         {
-            _gpio.Toggle(_relayPin, GpioPinValue.High, _openTime);
+            await _gpio.Toggle(_relayPin, GpioPinValue.High, _openTime);
         }
 
         #region Keypad Form Listeners
@@ -243,12 +243,12 @@ namespace GatekeeperCSharp
             InformationPanel.Visible = !AdminTablePanel.Visible;
         }
 
-        private void SubmitButton_Click(object sender, EventArgs e)
+        private async void SubmitButton_Click(object sender, EventArgs e)
         {
             if (_authManager.Authenticate(Input, out string id))
             {
                 Status = $"Welcome {id}!";
-                ToggleLock();
+                await ToggleLock();
                 ClearButton_Click(null, null);
             }
             else
@@ -260,10 +260,9 @@ namespace GatekeeperCSharp
         #endregion
 
         #region Admin Button Listeners
-        private void Admin_DebugButton_Click(object sender, EventArgs e)
+        private async void Admin_DebugButton_Click(object sender, EventArgs e)
         {
-            Task wakeup = WOL.Send(SecretKeys.DesktopMAC);
-            wakeup.Wait();
+            await WOL.Send(SecretKeys.DesktopMAC);
         }
 
         private void Admin_ExitButton_Click(object sender, EventArgs e)
@@ -349,7 +348,7 @@ namespace GatekeeperCSharp
             AddCardButton.BackColor = _gpio.AddingNewRfidCard ? Color.Green : Color.Transparent;
         }
 
-        private void Admin_TurnOffLightsButton_Click(object sender, EventArgs e)
+        private async void Admin_TurnOffLightsButton_Click(object sender, EventArgs e)
         {
             string server = ConfigurationManager.AppSettings["server"];
             string lifxApiAddress = Uri.EscapeUriString($"{server}/api/lifx");
@@ -363,25 +362,26 @@ namespace GatekeeperCSharp
             };
             StringContent content = new StringContent(Json.Serialize(requestObj), Encoding.UTF8, "application/json");
 
-            Task lightsOffTask = Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 try
                 {
                     HttpClient client = new HttpClient();
                     HttpResponseMessage response = await client.PostAsync(lifxApiAddress, content);
+                    Status = "During";
+                    Console.WriteLine("During");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     Console.WriteLine($"Light request exception handled.");
+                    Console.WriteLine($"Exception: {ex}");
                 }
             });
-
-            lightsOffTask.Wait();
         }
 
-        private void Admin_ToggleLockButton_Click(object sender, EventArgs e)
+        private async void Admin_ToggleLockButton_Click(object sender, EventArgs e)
         {
-            ToggleLock();
+            await ToggleLock();
 
             // Exit from Admin mode
             AdminButton_Click(sender, e);

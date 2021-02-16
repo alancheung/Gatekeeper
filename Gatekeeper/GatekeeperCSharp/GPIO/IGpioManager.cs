@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Abstractions;
 using Unosquare.RaspberryIO.Peripherals;
@@ -66,6 +67,7 @@ namespace GatekeeperCSharp.GPIO
         /// </summary>
         /// <param name="pin">Pin to set</param>
         /// <param name="value">Value to set to</param>
-        void Toggle(BcmPin pin, GpioPinValue initial, TimeSpan duration);
+        /// <returns>Async toggle task</returns>
+        Task Toggle(BcmPin pin, GpioPinValue initial, TimeSpan duration);
     }
 }

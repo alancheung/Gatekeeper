@@ -49,10 +49,9 @@ namespace GatekeeperCSharp.GPIO
             Pi.Gpio[pin].Write(value);
         }
 
-        public void Toggle(BcmPin pin, GpioPinValue initial, TimeSpan duration)
+        public async Task Toggle(BcmPin pin, GpioPinValue initial, TimeSpan duration)
         {
-            Task unlockTask = Task.Run(() => ToggleAction(pin, initial, duration));
-            unlockTask.Wait();
+            await Task.Run(() => ToggleAction(pin, initial, duration));
         }
 
         private void ToggleAction(BcmPin pin, GpioPinValue initial, TimeSpan duration)
