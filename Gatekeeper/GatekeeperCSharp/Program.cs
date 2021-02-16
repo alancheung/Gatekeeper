@@ -1,5 +1,5 @@
 ﻿using GatekeeperCSharp.GPIO;
-using GatekeeperCSharp.Key;
+using GatekeeperCSharp.Secrets;
 using System;
 using System.Configuration;
 using System.Windows.Forms;
@@ -50,7 +50,7 @@ namespace GatekeeperCSharp
 
                 gpio.Initialize(relayPin.Value, GpioPinDriveMode.Output);
                 AuthenticationManager authentication = new AuthenticationManager();
-                Weatherman ollieWilliams = new Weatherman(APIKeys.API, RELEASE);
+                Weatherman ollieWilliams = new Weatherman(SecretKeys.API, RELEASE);
                 ollieWilliams.SetUpdateInterval(weatherUpdate, forecastUpdate);
 
                 // Initialize application settings.
