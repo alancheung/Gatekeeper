@@ -1,6 +1,6 @@
 ﻿namespace GatekeeperCSharp.Secrets
 {
-    public partial class Keys
+    public partial class SecretKeys
     {
         /// <summary>
         /// OpenWeather API key
