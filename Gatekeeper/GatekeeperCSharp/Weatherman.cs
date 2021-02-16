@@ -1,4 +1,4 @@
-﻿using GatekeeperCSharp.Key;
+﻿using GatekeeperCSharp.Secrets;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

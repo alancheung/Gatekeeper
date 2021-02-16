@@ -1,5 +1,6 @@
 ﻿using GatekeeperCSharp.Common;
 using GatekeeperCSharp.GPIO;
+using GatekeeperCSharp.Secrets;
 using Swan.Formatters;
 using System;
 using System.Configuration;
@@ -116,13 +117,13 @@ namespace GatekeeperCSharp
         /// <param name="update"></param>
         private void _ollieWilliams_OnForecastUpdate(object sender, UIWeatherUpdate[] updates)
         {
-            UIWeatherUpdate tomorrow = updates.First(u => u.TimeStamp.Date == DateTimeOffset.Now.AddDays(1).Date);
-            SecondWeatherIcon.ImageLocation = tomorrow.IconPath;
-            SecondWeatherLabel.SetText(tomorrow.Description);
+            UIWeatherUpdate tomorrow = updates.FirstOrDefault(u => u.TimeStamp.Date == DateTimeOffset.Now.AddDays(1).Date);
+            SecondWeatherIcon.ImageLocation = tomorrow?.IconPath;
+            SecondWeatherLabel.SetText(tomorrow?.Description);
 
-            UIWeatherUpdate threeDay = updates.First(u => u.TimeStamp.Date == DateTimeOffset.Now.AddDays(2).Date);
-            ThirdWeatherIcon.ImageLocation = threeDay.IconPath;
-            ThirdWeatherLabel.SetText(threeDay.Description);
+            UIWeatherUpdate threeDay = updates.FirstOrDefault(u => u.TimeStamp.Date == DateTimeOffset.Now.AddDays(2).Date);
+            ThirdWeatherIcon.ImageLocation = threeDay?.IconPath;
+            ThirdWeatherLabel.SetText(threeDay?.Description);
         }
 
         /// <summary>
@@ -261,8 +262,8 @@ namespace GatekeeperCSharp
         #region Admin Button Listeners
         private void Admin_DebugButton_Click(object sender, EventArgs e)
         {
-            _ollieWilliams.UpdateWeather();
-            _ollieWilliams.UpdateForecast();
+            Task wakeup = WOL.Send(SecretKeys.DesktopMAC);
+            wakeup.Wait();
         }
 
         private void Admin_ExitButton_Click(object sender, EventArgs e)

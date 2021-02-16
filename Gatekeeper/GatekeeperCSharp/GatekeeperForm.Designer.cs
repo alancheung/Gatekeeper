@@ -77,8 +77,8 @@
             // MainPanel
             // 
             this.MainPanel.Controls.Add(this.RightTablePanel);
-            this.MainPanel.Controls.Add(this.InformationPanel);
             this.MainPanel.Controls.Add(this.AdminTablePanel);
+            this.MainPanel.Controls.Add(this.InformationPanel);
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.MainPanel.Location = new System.Drawing.Point(0, 0);
             this.MainPanel.Margin = new System.Windows.Forms.Padding(0);
