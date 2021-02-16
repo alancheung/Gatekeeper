@@ -117,7 +117,7 @@
     <Compile Include="GPIO\IGpioManager.cs" />
     <Compile Include="Secrets\SecretKeys.cs" />
     <Compile Include="Secrets\Secrets.untracked.cs" />
-    <Compile Include="MagicPacket.cs" />
+    <Compile Include="WOL.cs" />
     <Compile Include="Weatherman.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
