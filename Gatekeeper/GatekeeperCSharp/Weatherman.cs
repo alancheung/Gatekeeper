@@ -27,16 +27,15 @@ namespace GatekeeperCSharp
             StringBuilder weatherBuilder = new StringBuilder();
             weatherBuilder.AppendLine($"{update.Title} - {update.Description}");
             weatherBuilder.AppendLine($"Time: {TimeStamp.ToString("M/d/yy @ HH:mm")}");
+            weatherBuilder.AppendLine($"Wind: {update.WindSpeed}");
             if (isCurrent)
             {
-                weatherBuilder.AppendLine($"Current: {update.Temp}°F");
+                weatherBuilder.AppendLine($"Current: {update.Temp:0.00}°F");
             }
             else
             {
-
                 weatherBuilder.AppendLine($"Min/Max: {Math.Round(update.TempMin)}°F / {Math.Round(update.TempMax)}°F");
             }
-            weatherBuilder.AppendLine($"Wind: {update.WindSpeed}");
             weatherBuilder.AppendLine($"Humidity: {update.Humidity}%");
             Description = weatherBuilder.ToString();
 
