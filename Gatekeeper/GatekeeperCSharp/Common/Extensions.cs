@@ -34,8 +34,28 @@ namespace GatekeeperCSharp.Common
                 }
             }
 
-            control.Text = text;
-            control.Font = updatedFont;
+            SetTextPrivate(control, text, updatedFont);
+        }
+
+        delegate void SetTextCallback(Control control, string text, Font updatedFont);
+        /// <summary>
+        /// Set the text safely using the <see cref="Control.InvokeRequired"/> property.
+        /// </summary>
+        /// <param name="control">The control to update the text and font.</param>
+        /// <param name="text">The updated text</param>
+        /// <param name="font">A font that will fit within the control.</param>
+        private static void SetTextPrivate(Control control, string text, Font font)
+        {
+            if (control.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetTextPrivate);
+                control.Invoke(d, new object[] { control, text, font });
+            }
+            else
+            {
+                control.Text = text;
+                control.Font = font;
+            }
         }
     }
 
