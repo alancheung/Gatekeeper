@@ -16,8 +16,13 @@ namespace GatekeeperCSharp.GPIO
         public RFIDControllerMfrc522 Rfid { get; set; }
 
         public bool AddingNewRfidCard { get; set; } = false;
+        public DhtSensor Dht22 { get; set; }
 
         public event EventHandler<RfidDetectedEventArgs> OnRfidCardDetected;
+        public event EventHandler<DhtEventArgs> OnValidDhtData;
+
+        private static Random randy = new Random();
+        private System.Timers.Timer _dhtDataTimer;
 
         public void Initialize(BcmPin pin, GpioPinDriveMode mode)
         {
@@ -33,6 +38,16 @@ namespace GatekeeperCSharp.GPIO
             Console.WriteLine($"Initialized pins: {state.Stringify(s => s.Key)}.");
 
             Rfid = null;
+            Dht22 = null;
+            _dhtDataTimer = new System.Timers.Timer(TimeSpan.FromSeconds(2).TotalMilliseconds);
+            _dhtDataTimer.Elapsed += _dhtDataTimer_Elapsed;
+            _dhtDataTimer.AutoReset = true;
+            _dhtDataTimer.Enabled = true;
+        }
+
+        private void _dhtDataTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            InvokeOnValidDhtData();
         }
 
         public void SetPin(BcmPin pin, GpioPinValue value)
@@ -62,6 +77,11 @@ namespace GatekeeperCSharp.GPIO
             {
                 Data = new byte[4] { 1, 2, 3, 4 }
             });
+        }
+
+        public void InvokeOnValidDhtData()
+        {
+            OnValidDhtData?.Invoke(null, new DhtEventArgs() { Humidity = randy.NextDouble(), Temperature = randy.NextDouble() });
         }
     }
 }

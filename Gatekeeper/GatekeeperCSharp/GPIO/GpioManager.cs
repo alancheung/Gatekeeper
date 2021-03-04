@@ -17,8 +17,10 @@ namespace GatekeeperCSharp.GPIO
         private CancellationTokenSource RfidReadThreadCancellationSource { get; set; }
 
         public RFIDControllerMfrc522 Rfid { get; set; }
-
         public event EventHandler<RfidDetectedEventArgs> OnRfidCardDetected;
+
+        public DhtSensor Dht22 { get; set; }
+        public event EventHandler<DhtEventArgs> OnValidDhtData;
 
         public void Initialize(BcmPin pin, GpioPinDriveMode mode)
         {
@@ -38,10 +40,21 @@ namespace GatekeeperCSharp.GPIO
             }
 
             Rfid = new RFIDControllerMfrc522();
-
             RfidReadThreadCancellationSource = new CancellationTokenSource();
             RfidReadThread = new Thread(RfidReadAction);
             RfidReadThread.Start();
+
+            Dht22 = DhtSensor.Create(DhtType.Dht22, Pi.Gpio[BcmPin.Gpio26]);
+            Dht22.OnDataAvailable += Dht22_OnDataAvailable;
+            Dht22.Start(60);
+        }
+
+        private void Dht22_OnDataAvailable(object sender, DhtReadEventArgs e)
+        {
+            if (e.IsValid)
+            {
+                OnValidDhtData?.Invoke(sender, new DhtEventArgs() { Temperature = e.TemperatureFahrenheit, Humidity = e.HumidityPercentage });
+            }
         }
 
         public void SetPin(BcmPin pin, GpioPinValue value)
@@ -93,10 +106,12 @@ namespace GatekeeperCSharp.GPIO
         {
             RfidReadThreadCancellationSource?.Cancel();
             RfidReadThread?.Abort();
+            Dht22?.Dispose();
 
             Console.WriteLine($"{nameof(GpioManager)} disposing; " +
                 $"{nameof(RfidReadThreadCancellationSource)}({RfidReadThreadCancellationSource?.IsCancellationRequested}); " +
-                $"{nameof(RfidReadThread)}({RfidReadThread?.ThreadState})");
+                $"{nameof(RfidReadThread)}({RfidReadThread?.ThreadState});" +
+                $"{nameof(Dht22)}({Dht22?.IsRunning})");
         }
     }
 }

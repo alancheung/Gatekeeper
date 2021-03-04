@@ -18,6 +18,12 @@ namespace GatekeeperCSharp.GPIO
         public byte[] Data { get; set; }
     }
 
+    public class DhtEventArgs : EventArgs
+    {
+        public double Temperature;
+        public double Humidity;
+    }
+
     /// <summary>
     /// Application level wrapper around GPIO functions allowing simulation of GPIO elements.
     /// </summary>
@@ -37,6 +43,16 @@ namespace GatekeeperCSharp.GPIO
         /// Event fired when an RFID is read
         /// </summary>
         event EventHandler<RfidDetectedEventArgs> OnRfidCardDetected;
+
+        /// <summary>
+        /// DHT22 sensor
+        /// </summary>
+        DhtSensor Dht22 { get; set; }
+
+        /// <summary>
+        /// Event fired when new Dht22 sensor data is available
+        /// </summary>
+        event EventHandler<DhtEventArgs> OnValidDhtData;
 
         /// <summary>
         /// Initialize <see cref="Pi.Gpio"/> wrapper with a single <paramref name="pin"/> to <paramref name="mode"/>.

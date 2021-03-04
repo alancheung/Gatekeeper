@@ -88,6 +88,7 @@ namespace GatekeeperCSharp
             _ollieWilliams.OnWeatherUpdate += _ollieWilliams_OnWeatherUpdate;
             _ollieWilliams.OnForecastUpdate += _ollieWilliams_OnForecastUpdate;
             _gpio.OnRfidCardDetected += gpio_OnRfidCardDetected;
+            _gpio.OnValidDhtData += _gpio_OnValidDhtData;
 
             InitializeFormHeader();
             Clear();
@@ -95,6 +96,12 @@ namespace GatekeeperCSharp
             // First load
             _ollieWilliams.UpdateWeather();
             _ollieWilliams.UpdateForecast();
+        }
+
+        private void _gpio_OnValidDhtData(object sender, DhtEventArgs e)
+        {
+            string title = $"Temperature: {e.Temperature:0.00}°F /// Humidity: {e.Humidity}%";
+            WeatherTitleLabel.SetText(title);
         }
 
         /// <summary>
@@ -105,7 +112,6 @@ namespace GatekeeperCSharp
         private void _ollieWilliams_OnWeatherUpdate(object sender, UIWeatherUpdate update)
         {
             CurrentWeatherIcon.ImageLocation = update.IconPath;
-            CurrentWeatherTitleLabel.SetText(update.Title);
             CurrentWeatherLabel.SetText(update.Description);
             LastWeatherUpdateLabel.SetText(update.LastUpdateMessage);
         }
@@ -175,7 +181,7 @@ namespace GatekeeperCSharp
 
             InformationPanel.Location = new Point(0, 0);
             InformationPanel.Size = new Size(ScreenSize.Width / 2, ScreenSize.Height);
-            CurrentWeatherTitleLabel.Size = new Size((ScreenSize.Width / 2) - 1, 50);
+            WeatherTitleLabel.Size = new Size((ScreenSize.Width / 2) - 1, 50);
 
             if (RELEASE)
             {
@@ -263,9 +269,9 @@ namespace GatekeeperCSharp
         #endregion
 
         #region Admin Button Listeners
-        private async void Admin_DebugButton_Click(object sender, EventArgs e)
+        private void Admin_DebugButton_Click(object sender, EventArgs e)
         {
-            await WOL.Send(SecretKeys.DesktopMAC);
+            (_gpio as GpioManagerSimulator)?.InvokeOnValidDhtData();
         }
 
         private void Admin_ExitButton_Click(object sender, EventArgs e)

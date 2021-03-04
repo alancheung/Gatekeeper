@@ -46,7 +46,7 @@
             this.EightButton = new System.Windows.Forms.Button();
             this.NineButton = new System.Windows.Forms.Button();
             this.InformationPanel = new System.Windows.Forms.Panel();
-            this.CurrentWeatherTitleLabel = new System.Windows.Forms.Label();
+            this.WeatherTitleLabel = new System.Windows.Forms.Label();
             this.CurrentWeatherIcon = new System.Windows.Forms.PictureBox();
             this.CurrentWeatherLabel = new System.Windows.Forms.Label();
             this.SecondWeatherIcon = new System.Windows.Forms.PictureBox();
@@ -77,8 +77,8 @@
             // MainPanel
             // 
             this.MainPanel.Controls.Add(this.RightTablePanel);
-            this.MainPanel.Controls.Add(this.AdminTablePanel);
             this.MainPanel.Controls.Add(this.InformationPanel);
+            this.MainPanel.Controls.Add(this.AdminTablePanel);
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.MainPanel.Location = new System.Drawing.Point(0, 0);
             this.MainPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -292,7 +292,7 @@
             // 
             // InformationPanel
             // 
-            this.InformationPanel.Controls.Add(this.CurrentWeatherTitleLabel);
+            this.InformationPanel.Controls.Add(this.WeatherTitleLabel);
             this.InformationPanel.Controls.Add(this.CurrentWeatherIcon);
             this.InformationPanel.Controls.Add(this.CurrentWeatherLabel);
             this.InformationPanel.Controls.Add(this.SecondWeatherIcon);
@@ -306,18 +306,18 @@
             this.InformationPanel.Size = new System.Drawing.Size(800, 489);
             this.InformationPanel.TabIndex = 2;
             // 
-            // CurrentWeatherTitleLabel
+            // WeatherTitleLabel
             // 
-            this.CurrentWeatherTitleLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.CurrentWeatherTitleLabel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CurrentWeatherTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CurrentWeatherTitleLabel.Location = new System.Drawing.Point(1, 0);
-            this.CurrentWeatherTitleLabel.Name = "CurrentWeatherTitleLabel";
-            this.CurrentWeatherTitleLabel.Size = new System.Drawing.Size(392, 50);
-            this.CurrentWeatherTitleLabel.TabIndex = 0;
-            this.CurrentWeatherTitleLabel.Text = "Current Conditions";
-            this.CurrentWeatherTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.CurrentWeatherTitleLabel.Click += new System.EventHandler(this.CurrentWeatherTitleLabel_Click);
+            this.WeatherTitleLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.WeatherTitleLabel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.WeatherTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WeatherTitleLabel.Location = new System.Drawing.Point(1, 0);
+            this.WeatherTitleLabel.Name = "WeatherTitleLabel";
+            this.WeatherTitleLabel.Size = new System.Drawing.Size(392, 50);
+            this.WeatherTitleLabel.TabIndex = 0;
+            this.WeatherTitleLabel.Text = "Interior Conditions";
+            this.WeatherTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.WeatherTitleLabel.Click += new System.EventHandler(this.CurrentWeatherTitleLabel_Click);
             // 
             // CurrentWeatherIcon
             // 
@@ -580,7 +580,7 @@
         private System.Windows.Forms.Button AddCardButton;
         private System.Windows.Forms.Button TurnOffLightsButton;
         private System.Windows.Forms.Button ToggleLockButton;
-        private System.Windows.Forms.Label CurrentWeatherTitleLabel;
+        private System.Windows.Forms.Label WeatherTitleLabel;
         private System.Windows.Forms.PictureBox CurrentWeatherIcon;
         private System.Windows.Forms.Label CurrentWeatherLabel;
         private System.Windows.Forms.Label LastWeatherUpdateLabel;
