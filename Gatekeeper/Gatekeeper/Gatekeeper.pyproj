@@ -4,8 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>efa944c9-8c72-49d2-83ae-96da196b320b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>FacialRecognition\face_detection.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -32,6 +31,9 @@
     <Content Include="Keypad\haar_frontface_default.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FacialRecognition\face_detection.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="FacialRecognition\generateDataset.py" />
     <Compile Include="FacialRecognition\trainDataset.py" />
     <Compile Include="FacialRecognition\verifyDataset.py">
