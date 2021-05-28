@@ -102,6 +102,11 @@ namespace GatekeeperCSharp
         {
             string title = $"Temperature: {e.Temperature:0.00}°F /// Humidity: {e.Humidity}%";
             WeatherTitleLabel.SetText(title);
+            
+            if (e.Humidity > 60d)
+            {
+                Status = "Humidity Warning";
+            }
         }
 
         /// <summary>

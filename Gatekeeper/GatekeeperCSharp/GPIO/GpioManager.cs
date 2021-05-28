@@ -55,6 +55,10 @@ namespace GatekeeperCSharp.GPIO
             {
                 OnValidDhtData?.Invoke(sender, new DhtEventArgs() { Temperature = e.TemperatureFahrenheit, Humidity = e.HumidityPercentage });
             }
+            else
+            {
+                Console.WriteLine("Dht22 data available, but was not valid!");
+            }
         }
 
         public void SetPin(BcmPin pin, GpioPinValue value)
