@@ -60,7 +60,7 @@ namespace GatekeeperCSharp
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 
-                network = new UdpReceiver();
+                network = new UdpReceiver(port);
                 network.Start();
 
                 Form form = new GatekeeperForm(authentication, ollieWilliams, gpio, network, relayPin.Value, openTime);

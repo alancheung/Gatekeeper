@@ -110,7 +110,7 @@ namespace GatekeeperCSharp
             _ollieWilliams.UpdateForecast();
         }
 
-        private void CommunicationClient_OnCommunicationData(object sender, ICommand cmd)
+        private void CommunicationClient_OnCommunicationData(object sender, IMessage cmd)
         {
             if (cmd is LockCommand)
             {
