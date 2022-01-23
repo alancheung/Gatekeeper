@@ -240,8 +240,6 @@ namespace GatekeeperCSharp
                 if (UseRealWeather)
                 {
                     result = FiveDaysForecast.GetByCoordinates(SecretKeys.Latitude, SecretKeys.Longitude, "en", "imperial");
-
-                    File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "fakeForecast.json"), JsonConvert.SerializeObject(result));
                 }
                 else
                 {
