@@ -1,5 +1,6 @@
 ﻿using GatekeeperCSharp.GPIO;
 using GatekeeperCSharp.Secrets;
+using Raspi.Communication;
 using System;
 using System.Configuration;
 using System.Windows.Forms;
@@ -29,6 +30,7 @@ namespace GatekeeperCSharp
             // References required in finally
             IGpioManager gpio = null;
             BcmPin? relayPin = null;
+            UdpReceiver network = null;
 
             try
             {
@@ -37,6 +39,7 @@ namespace GatekeeperCSharp
                 TimeSpan openTime = TimeSpan.FromMilliseconds(double.Parse(ConfigurationManager.AppSettings["open_time"]));
                 TimeSpan weatherUpdate = TimeSpan.FromMinutes(double.Parse(ConfigurationManager.AppSettings["WeatherUpdateMins"]));
                 TimeSpan forecastUpdate = TimeSpan.FromMinutes(double.Parse(ConfigurationManager.AppSettings["ForecastUpdateMins"]));
+                int port = int.Parse(ConfigurationManager.AppSettings["ReceivePort"]);
 
                 // Initialize gpio for simulated or real runs.
                 if (RELEASE)
@@ -56,8 +59,11 @@ namespace GatekeeperCSharp
                 // Initialize application settings.
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+                
+                network = new UdpReceiver(port);
+                network.Start();
 
-                Form form = new GatekeeperForm(authentication, ollieWilliams, gpio, relayPin.Value, openTime);
+                Form form = new GatekeeperForm(authentication, ollieWilliams, gpio, network, relayPin.Value, openTime);
                 Application.Run(form);
             }
             finally
@@ -67,6 +73,8 @@ namespace GatekeeperCSharp
                 {
                     gpio.Toggle(relayPin.Value, GpioPinValue.High, TimeSpan.FromSeconds(3));
                 }
+
+                network.Dispose();
             }
         }
     }

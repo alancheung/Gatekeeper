@@ -1,6 +1,8 @@
 ﻿using GatekeeperCSharp.Common;
 using GatekeeperCSharp.GPIO;
 using GatekeeperCSharp.Secrets;
+using Raspi.Communication;
+using Raspi.Communication.Messages;
 using Swan.Formatters;
 using System;
 using System.Configuration;
@@ -52,6 +54,11 @@ namespace GatekeeperCSharp
         private readonly TimeSpan _openTime;
 
         /// <summary>
+        /// Disable unlocking.
+        /// </summary>
+        private bool _lockDisabled;
+
+        /// <summary>
         /// Pass-through control to <see cref="StatusLabel.Text"/> property.
         /// </summary>
         public string Status
@@ -72,12 +79,16 @@ namespace GatekeeperCSharp
         /// Constructor
         /// </summary>
         /// <param name="authentication"></param>
+        /// <param name="ollieWilliams"></param>
         /// <param name="gpioManager"></param>
+        /// <param name="communicationClient"
         /// <param name="relayPin"></param>
         /// <param name="openTime"></param>
-        public GatekeeperForm(AuthenticationManager authentication, Weatherman ollieWilliams, IGpioManager gpioManager, BcmPin relayPin, TimeSpan openTime)
+        public GatekeeperForm(AuthenticationManager authentication, Weatherman ollieWilliams, IGpioManager gpioManager, UdpReceiver communicationClient, BcmPin relayPin, TimeSpan openTime)
         {
             InitializeComponent();
+
+            _lockDisabled = false;
 
             _authManager = authentication;
             _ollieWilliams = ollieWilliams;
@@ -89,6 +100,7 @@ namespace GatekeeperCSharp
             _ollieWilliams.OnForecastUpdate += _ollieWilliams_OnForecastUpdate;
             _gpio.OnRfidCardDetected += gpio_OnRfidCardDetected;
             _gpio.OnValidDhtData += _gpio_OnValidDhtData;
+            communicationClient.OnCommunicationData += CommunicationClient_OnCommunicationData;
 
             InitializeFormHeader();
             Clear();
@@ -96,6 +108,16 @@ namespace GatekeeperCSharp
             // First load
             _ollieWilliams.UpdateWeather();
             _ollieWilliams.UpdateForecast();
+        }
+
+        private void CommunicationClient_OnCommunicationData(object sender, IMessage cmd)
+        {
+            if (cmd is LockCommand)
+            {
+                bool lockState = (cmd as LockCommand).Lock;
+                Status = lockState ? "Disabled..." : string.Empty;
+                _lockDisabled = lockState;
+            }
         }
 
         private void _gpio_OnValidDhtData(object sender, DhtEventArgs e)
@@ -256,6 +278,13 @@ namespace GatekeeperCSharp
 
         private async void SubmitButton_Click(object sender, EventArgs e)
         {
+            if (_lockDisabled)
+            {
+                ClearButton_Click(null, null);
+                Status = "Lock Disabled!";
+                return;
+            }
+
             if (_authManager.Authenticate(Input, out string id))
             {
                 Status = $"Welcome {id}!";
@@ -393,12 +422,10 @@ namespace GatekeeperCSharp
             });
         }
 
-        private async void Admin_ToggleLockButton_Click(object sender, EventArgs e)
+        private void Admin_ToggleLockButton_Click(object sender, EventArgs e)
         {
-            await ToggleLock();
-
-            // Exit from Admin mode
-            AdminButton_Click(sender, e);
+            _lockDisabled = !_lockDisabled;
+            Status = _lockDisabled ? "Disabled..." : "Enabled...";
         }
 
         private void Admin_WeatherSourceButton_Click(object sender, EventArgs e)

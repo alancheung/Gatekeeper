@@ -188,36 +188,44 @@ namespace GatekeeperCSharp
         /// <returns>Was the update successful</returns>
         public bool UpdateWeather()
         {
-            SingleResult<CurrentWeatherResult> result;
-            if (UseRealWeather)
+            try
             {
-                result = CurrentWeather.GetByCoordinates(SecretKeys.Latitude, SecretKeys.Longitude, "en", "imperial");
-            }
-            else
-            {
-                string debugWeatherFilePath = Path.Combine(Environment.CurrentDirectory, "fakeWeather.json");
-                string fakeWeatherJson = File.ReadAllText(debugWeatherFilePath);
-                result = JsonConvert.DeserializeObject<SingleResult<CurrentWeatherResult>>(fakeWeatherJson);
-                Console.WriteLine("Faked weather results!");
-            }
-            
-            if (result.Success)
-            {
-                LastUpdate = DateTimeOffset.Now;
-                LastUpdateFailed = false;
-                _currentWeather = result;
-                result.Item.Date = TimeZone.CurrentTimeZone.ToLocalTime(result.Item.Date);
-            }
-            else
-            {
-                LastUpdateFailed = true;
-                Console.WriteLine($"Weather update failed with message: {result.Message}");
-            }
+                SingleResult<CurrentWeatherResult> result;
+                if (UseRealWeather)
+                {
+                    result = CurrentWeather.GetByCoordinates(SecretKeys.Latitude, SecretKeys.Longitude, "en", "imperial");
+                }
+                else
+                {
+                    string debugWeatherFilePath = Path.Combine(Environment.CurrentDirectory, "fakeWeather.json");
+                    string fakeWeatherJson = File.ReadAllText(debugWeatherFilePath);
+                    result = JsonConvert.DeserializeObject<SingleResult<CurrentWeatherResult>>(fakeWeatherJson);
+                    Console.WriteLine("Faked weather results!");
+                }
 
-            UIWeatherUpdate forUi = new UIWeatherUpdate(result.Item, !LastUpdateFailed);
+                if (result.Success)
+                {
+                    LastUpdate = DateTimeOffset.Now;
+                    LastUpdateFailed = false;
+                    _currentWeather = result;
+                    result.Item.Date = TimeZone.CurrentTimeZone.ToLocalTime(result.Item.Date);
+                }
+                else
+                {
+                    LastUpdateFailed = true;
+                    Console.WriteLine($"Weather update failed with message: {result.Message}");
+                }
 
-            OnWeatherUpdate?.Invoke(this, forUi);
-            return result.Success;
+                UIWeatherUpdate forUi = new UIWeatherUpdate(result.Item, !LastUpdateFailed);
+
+                OnWeatherUpdate?.Invoke(this, forUi);
+                return result.Success;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception handled during weather update: {ex.Message}");
+                return false;
+            }
         }
 
         /// <summary>
@@ -226,45 +234,52 @@ namespace GatekeeperCSharp
         /// <returns>Was the update successful</returns>
         public bool UpdateForecast()
         {
-            Result<FiveDaysForecastResult> result;
-            if (UseRealWeather)
+            try
             {
-                result = FiveDaysForecast.GetByCoordinates(SecretKeys.Latitude, SecretKeys.Longitude, "en", "imperial");
+                Result<FiveDaysForecastResult> result;
+                if (UseRealWeather)
+                {
+                    result = FiveDaysForecast.GetByCoordinates(SecretKeys.Latitude, SecretKeys.Longitude, "en", "imperial");
+                }
+                else
+                {
+                    string debugWeatherFilePath = Path.Combine(Environment.CurrentDirectory, "fakeForecast.json");
+                    string fakeWeatherJson = File.ReadAllText(debugWeatherFilePath);
+                    result = JsonConvert.DeserializeObject<Result<FiveDaysForecastResult>>(fakeWeatherJson);
+                    Console.WriteLine("Faked weather results!");
+                }
 
-                File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "fakeForecast.json"), JsonConvert.SerializeObject(result));
+                if (result.Success)
+                {
+                    LastUpdate = DateTimeOffset.Now;
+                    LastUpdateFailed = false;
+                    _forecastWeather = result;
+                    result.Items.ForEach(r => r.Date = TimeZone.CurrentTimeZone.ToLocalTime(r.Date));
+                }
+                else
+                {
+                    LastUpdateFailed = true;
+                    Console.WriteLine($"Weather update failed with message: {result.Message}");
+                }
+
+                // Determine the most severe weather during the next few days and choose those values to show.
+                Dictionary<DateTime, FiveDaysForecastResult> highestRank = result.Items
+                    .GroupBy(grp => grp.Date.Date)
+                    .ToDictionary(grp => grp.Key, grp => HighestRankingWeatherUpdate(grp));
+
+                UIWeatherUpdate[] forUi = highestRank.Values
+                    .Select(f => new UIWeatherUpdate(f, !LastUpdateFailed))
+                    .ToArray();
+                OnForecastUpdate?.Invoke(this, forUi);
+
+                return result.Success;
+
             }
-            else
+            catch (Exception ex)
             {
-                string debugWeatherFilePath = Path.Combine(Environment.CurrentDirectory, "fakeForecast.json");
-                string fakeWeatherJson = File.ReadAllText(debugWeatherFilePath);
-                result = JsonConvert.DeserializeObject<Result<FiveDaysForecastResult>>(fakeWeatherJson);
-                Console.WriteLine("Faked weather results!");
+                Console.WriteLine($"Exception handled during forecast update: {ex.Message}");
+                return false;
             }
-
-            if (result.Success)
-            {
-                LastUpdate = DateTimeOffset.Now;
-                LastUpdateFailed = false;
-                _forecastWeather = result;
-                result.Items.ForEach(r => r.Date = TimeZone.CurrentTimeZone.ToLocalTime(r.Date));
-            }
-            else
-            {
-                LastUpdateFailed = true;
-                Console.WriteLine($"Weather update failed with message: {result.Message}");
-            }
-
-            // Determine the most severe weather during the next few days and choose those values to show.
-            Dictionary<DateTime, FiveDaysForecastResult> highestRank = result.Items
-                .GroupBy(grp => grp.Date.Date)
-                .ToDictionary(grp => grp.Key, grp => HighestRankingWeatherUpdate(grp));
-
-            UIWeatherUpdate[] forUi = highestRank.Values
-                .Select(f => new UIWeatherUpdate(f, !LastUpdateFailed))
-                .ToArray();
-            OnForecastUpdate?.Invoke(this, forUi);
-
-            return result.Success;
         }
 
         private FiveDaysForecastResult HighestRankingWeatherUpdate(IGrouping<DateTime, FiveDaysForecastResult> group)
